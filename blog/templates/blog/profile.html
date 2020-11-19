@@ -1,0 +1,143 @@
+
+{% extends "blog/base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="single-channel-page" id="content-wrapper">
+    <div class="single-channel-image">
+        <img  alt=""  width="100%" height="300" src="{{users.profile.cover_image.url}}">
+        <div class="channel-profile">
+            <img class="channel-profile-img" alt="" src="{{users.profile.image.url}}">
+            <div class="social hidden-xs">
+                Social &nbsp;
+                <a class="fb" href="#">Facebook</a>
+                <a class="tw" href="#">Twitter</a>
+                <a class="gp" href="#">Google</a>
+            </div>
+        </div>
+    </div>
+    <div class="single-channel-nav">
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <a class="channel-brand" href="#">{{users.username}}<span title="" data-placement="top" data-toggle="tooltip" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></span></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item dropdown ">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Profile
+                        </a>
+                        <div class="dropdown-menu " aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="#">View Profile</a>
+                            <a class="dropdown-item" href="{% url 'profile' %}">Edit Profile</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'profile_pk' users.pk %}">Posts</a>
+                    </li>
+                    <li class="nav-item  ">
+                        <a class="nav-link" href="{% url 'user-category' users.username %}">Gallery <span class="sr-only">(current)</span></a>
+                    </li>
+
+                    <li class="nav-item ">
+                        <a class="nav-link" href="{% url 'user-playlist' users.username %}">Playlist</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Favorites</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+
+                </ul>
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control form-control-sm mr-sm-1" type="search" placeholder="Search" aria-label="Search"><button class="btn btn-outline-success btn-sm my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button> &nbsp;&nbsp;&nbsp;
+                    <button class="btn btn-outline-danger btn-sm" type="button">Subscribe <strong>1.4M</strong></button>
+                </form>
+            </div>
+        </nav> <div class="container-fluid pb-0">
+        <div class="video-block section-padding">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="single-video-left">
+                        <div class="single-video-info-content box mb-3">
+                            <h6>Cast:</h6>
+                            <p>Nathan Drake , Victor Sullivan , Sam Drake , Elena Fisher</p>
+                            <h6>Category :</h6>
+                            <p>Gaming , PS4 Exclusive , Gameplay , 1080p</p>
+                            <h6>About :</h6>
+                            <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved overVarious versions have evolved over the years, sometimes </p>
+                            <h6>Tags :</h6>
+                            <p class="tags mb-0">
+                                <span><a href="#">Uncharted 4</a></span>
+                                <span><a href="#">Playstation 4</a></span>
+                                <span><a href="#">Gameplay</a></span>
+                                <span><a href="#">1080P</a></span>
+                                <span><a href="#">ps4Share</a></span>
+                                <span><a href="#">+ 6</a></span>
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="single-video-right">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="channels-card">
+                                    <div class="d-flex justify-content-center h-100">
+                                            <div class="image_outer_container">
+                                                <div class="image_inner_container">
+                                                    <img height="50%" width="50%" src="{{users.profile.image.url}}" >
+                                                     <div class="green_icon"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    <div class="channels-card-body">
+                                        <div class="channels-title">
+                                            <a href="{% url 'profile_me' users.pk %}">{{ users.username }}<span title="" data-placement="top" data-toggle="tooltip" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></span></a>
+                                            <br>
+                                        </div><br>
+                                        <div class="channels-view">
+
+                                            <div class="row">
+                                                <!-- Note that for bootstrap all the rows are always 12 columns -->
+                                                <div class="col-6">
+                                                    {% if friends %}
+                                                    <div class="channels-card-image-btn"><button type="button" class="btn btn-success btn-sm border-none">Following</button> <button type="button" class="btn btn-warning btn-sm border-none"><strong>{{friends.count}}</strong></button></div>
+                                                    {% else %}
+                                                    <div class="channels-card-image-btn"><button type="button" class="btn btn-success btn-sm border-none">Following</button> <button type="button" class="btn btn-warning btn-sm border-none"><strong>0</strong></button></div>
+
+                                                    {% endif %}
+                                                </div>
+                                                <div class="col-6">
+                                                    {% if friend %}
+                                                    <div class="channels-card-image-btn"><button type="button" class="btn btn-success btn-sm border-none">Follower</button> <button type="button" class="btn btn-warning btn-sm border-none"><strong>{{friend.count}}</strong></button></div>
+                                                    {% else %}
+                                                    <div class="channels-card-image-btn"><button type="button" class="btn btn-success btn-sm border-none">Follower</button> <button type="button" class="btn btn-warning btn-sm border-none"><strong>0</strong></button></div>
+                                                    {% endif %}
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <!-- /.container-fluid -->
+</div>
+<!-- /.content-wrapper -->
+{% endblock content %}
+

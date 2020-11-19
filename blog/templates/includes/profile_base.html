@@ -1,0 +1,57 @@
+ <div class="single-channel-page" id="content-wrapper">
+            <div class="single-channel-image">
+                <img  alt=""  width="100%" height="300" src="{{user.profile.cover_image.url}}">
+                <div class="channel-profile">
+                    <img class="channel-profile-img" alt="" src="{{user.profile.image.url}}">
+                    <div class="social hidden-xs">
+                        Social &nbsp;
+                        <a class="fb" href="#">Facebook</a>
+                        <a class="tw" href="#">Twitter</a>
+                        <a class="gp" href="#">Google</a>
+                    </div>
+                </div>
+            </div>
+            <div class="single-channel-nav">
+                <nav class="navbar navbar-expand-lg navbar-light">
+                    <a class="channel-brand" href="#">{{user.username}}<span title="" data-placement="top" data-toggle="tooltip" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></span></a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                  </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mr-auto">
+                            <li class="nav-item dropdown active">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                           Profile
+                           </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="#">View Profile</a>
+                                    <a class="dropdown-item" href="{% url 'profile' %}">Edit Profile</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#">Something else here</a>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'profile_pk' album.author.pk %}">Posts</a>
+                            </li>
+                            <li class="nav-item  ">
+                                <a class="nav-link" href="{% url 'user-category' album.author.username %}">Gallery <span class="sr-only">(current)</span></a>
+                            </li>
+
+                            <li class="nav-item ">
+                                <a class="nav-link" href="{% url 'user-playlist' album.author.username %}">Playlist</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Favorites</a>
+                            </li>
+                             <li class="nav-item">
+                                <a class="nav-link" href="#">About</a>
+                            </li>
+
+                        </ul>
+                        <form class="form-inline my-2 my-lg-0">
+                            <input class="form-control form-control-sm mr-sm-1" type="search" placeholder="Search" aria-label="Search"><button class="btn btn-outline-success btn-sm my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button> &nbsp;&nbsp;&nbsp;
+                            <button class="btn btn-outline-danger btn-sm" type="button">Subscribe <strong>1.4M</strong></button>
+                        </form>
+                    </div>
+                </nav>
+            </div>

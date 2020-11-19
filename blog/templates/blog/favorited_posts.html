@@ -1,0 +1,228 @@
+{% extends "blog/base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="single-channel-page" id="content-wrapper">
+    {% for post in posts %}
+    {% if forloop.first %}
+    <div class="single-channel-image">
+        <img  alt=""  width="100%" height="300" src="{{post.author.profile.cover_image.url}}">
+        <div class="channel-profile">
+            <img class="channel-profile-img" alt="" src="{{post.author.profile.image.url}}">
+            <div class="social hidden-xs">
+                Social &nbsp;
+                <a class="fb" href="#">Facebook</a>
+                <a class="tw" href="#">Twitter</a>
+                <a class="gp" href="#">Google</a>
+            </div>
+        </div>
+    </div>
+    <div class="single-channel-nav">
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <a class="channel-brand" href="#">{{post.author.username}}<span title="" data-placement="top" data-toggle="tooltip" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></span></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Profile
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="#">View Profile</a>
+                            <a class="dropdown-item" href="{% url 'profile' %}">Edit Profile</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                        </div>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" href="{% url 'user-category' post.author.username %}">Gallery <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link  active" href="#">Photo</a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" href="{% url 'user-playlist' post.author.username %}">Playlist</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Video</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Favorites</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+
+                </ul>
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control form-control-sm mr-sm-1" type="search" placeholder="Search" aria-label="Search"><button class="btn btn-outline-success btn-sm my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button> &nbsp;&nbsp;&nbsp;
+                    <button class="btn btn-outline-danger btn-sm" type="button">Subscribe <strong>1.4M</strong></button>
+                </form>
+            </div>
+        </nav>
+    </div>
+     {% endif %}
+ {% endfor %}
+
+    <div class="container-fluid" data-aos="fade" data-aos-delay="500">
+        <div class="video-block section-padding">
+            <div class="main-title">
+                <div class="btn-group float-right right-action">
+                    <a href="#" class="right-action-link text-gray" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Sort by <i class="fa fa-caret-down" aria-hidden="true"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item" href="#"><i class="fas fa-fw fa-star"></i> &nbsp; Top Rated</a>
+                        <a class="dropdown-item" href="#"><i class="fas fa-fw fa-signal"></i> &nbsp; Viewed</a>
+                        <a class="dropdown-item" href="#"><i class="fas fa-fw fa-times-circle"></i> &nbsp; Close</a>
+                    </div>
+                </div>
+                <h6>{{post.category}} Gallery</h6>
+                <hr>
+            </div>
+
+            <div class="row" id="lightgallery">
+                {% for post in posts %}
+                {% if post.photo %}
+                <div class="col-sm-6 col-md-4 col-lg-4 col-xl-3" data-aos="fade" data-src="{{post.photo.url}}" data-sub-html="<h4>{{post.title}}</h4><p>{{post.content}}</p>">
+                    <div class="video-card">
+                        <div class="video-card-image">
+                            <a class="play-icon" href="#"><i class="fas fa-images"></i></a>
+                            <a href="#"><img height="200" width="100%" src="{{ post.photo.url }}" alt=""></a>
+                        </div>
+                        <div class="video-card-body">
+                            <div class="video-title">
+                                <a href="#">{{post.title}}</a>
+                            </div>
+                            <div class="video-page text-success">
+                                {{post.category}} <a title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></a>
+                            </div>
+                            <div class="video-view">
+                                1.8M views &nbsp;<i class="fas fa-calendar-alt"></i> 11 Months ago
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+                <div class="col-sm-6 col-md-4 col-lg-4 col-xl-3 item" data-aos="fade" data-src="/static/images/big-images/nature_big_3.jpg" data-sub-html="<h4>Fading Light</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem reiciendis, dolorum illo temporibus culpa eaque dolore rerum quod voluptate doloribus.</p>">
+                    <a href="#"><img src="/static/images/nature_small_3.jpg" alt="IMage" class="img-fluid"></a>
+                    <div class="video-card-body">
+                        <div class="video-title">
+                            <a href="#">There are many variations of passages of Lorem</a>
+                        </div>
+                        <div class="video-page text-success">
+                            Education <a title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></a>
+                        </div>
+                        <div class="video-view">
+                            1.8M views &nbsp;<i class="fas fa-calendar-alt"></i> 11 Months ago
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-4 col-lg-4 col-xl-3 item" data-aos="fade" data-src="/static/images/big-images/nature_big_4.jpg" data-sub-html="<h4>Fading Light</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Enim perferendis quae iusto omnis praesentium labore tempore eligendi quo corporis sapiente.</p>">
+                    <a href="#"><img src="/static/images/nature_small_4.jpg" alt="IMage" class="img-fluid"></a>
+                    <div class="video-card-body">
+                        <div class="video-title">
+                            <a href="#">There are many variations of passages of Lorem</a>
+                        </div>
+                        <div class="video-page text-success">
+                            Education <a title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></a>
+                        </div>
+                        <div class="video-view">
+                            1.8M views &nbsp;<i class="fas fa-calendar-alt"></i> 11 Months ago
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-4 col-lg-4 col-xl-3 item" data-aos="fade" data-src="/static/images/big-images/nature_big_5.jpg" data-sub-html="<h4>Fading Light</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe, voluptatum voluptate tempore aliquam, dolorem distinctio. In quas maiores tenetur sequi.</p>">
+                    <a href="#"><img src="/static/images/nature_small_5.jpg" alt="IMage" class="img-fluid"></a>
+                    <div class="video-card-body">
+                        <div class="video-title">
+                            <a href="#">There are many variations of passages of Lorem</a>
+                        </div>
+                        <div class="video-page text-success">
+                            Education <a title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></a>
+                        </div>
+                        <div class="video-view">
+                            1.8M views &nbsp;<i class="fas fa-calendar-alt"></i> 11 Months ago
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-4 col-lg-4 col-xl-3 item" data-aos="fade" data-src="/static/images/big-images/nature_big_6.jpg" data-sub-html="<h4>Fading Light</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rerum cum culpa blanditiis illum, voluptatum iusto quisquam mollitia debitis quaerat maiores?</p>">
+                    <a href="#"><img src="/static/images/nature_small_6.jpg" alt="IMage" class="img-fluid"></a>
+                    <div class="video-card-body">
+                        <div class="video-title">
+                            <a href="#">There are many variations of passages of Lorem</a>
+                        </div>
+                        <div class="video-page text-success">
+                            Education <a title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></a>
+                        </div>
+                        <div class="video-view">
+                            1.8M views &nbsp;<i class="fas fa-calendar-alt"></i> 11 Months ago
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-md-4 col-lg-4 col-xl-3 item" data-aos="fade" data-src="/static/images/big-images/nature_big_7.jpg" data-sub-html="<h4>Fading Light</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores similique impedit possimus, laboriosam enim at placeat nihil voluptatibus voluptate hic!</p>">
+                    <a href="#"><img src="/static/images/nature_small_7.jpg" alt="IMage" class="img-fluid"></a>
+                    <div class="video-card-body">
+                        <div class="video-title">
+                            <a href="#">There are many variations of passages of Lorem</a>
+                        </div>
+                        <div class="video-page text-success">
+                            Education <a title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></a>
+                        </div>
+                        <div class="video-view">
+                            1.8M views &nbsp;<i class="fas fa-calendar-alt"></i> 11 Months ago
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-4 col-lg-4 col-xl-3 item" data-aos="fade" data-src="/static/images/big-images/nature_big_8.jpg" data-sub-html="<h4>Fading Light</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam vitae sed cum mollitia itaque soluta laboriosam eaque sit ratione, aliquid.</p>">
+                    <a href="#"><img src="/static/images/nature_small_8.jpg" alt="IMage" class="img-fluid"></a>
+                    <div class="video-card-body">
+                        <div class="video-title">
+                            <a href="#">There are many variations of passages of Lorem</a>
+                        </div>
+                        <div class="video-page text-success">
+                            Education <a title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></a>
+                        </div>
+                        <div class="video-view">
+                            1.8M views &nbsp;<i class="fas fa-calendar-alt"></i> 11 Months ago
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-4 col-lg-4 col-xl-3 item" data-aos="fade" data-src="/static/images/big-images/nature_big_9.jpg" data-sub-html="<h4>Fading Light</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem reiciendis debitis beatae facilis quos, enim quis nobis magnam architecto earum!</p>">
+                    <a href="#"><img src="/static/images/nature_small_9.jpg" alt="IMage" class="img-fluid"></a>
+                    <div class="video-card-body">
+                        <div class="video-title">
+                            <a href="video-page.html">There are many variations of passages of Lorem</a>
+                        </div>
+                        <div class="video-page text-success">
+                            Education <a title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></a>
+                        </div>
+                        <div class="video-view">
+                            1.8M views &nbsp;<i class="fas fa-calendar-alt"></i> 11 Months ago
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+    <!-- Sticky Footer -->
+    <footer class="sticky-footer ml-0">
+        <div class="container">
+            <div class="row no-gutters">
+                <p class="mt-1 mb-0"><strong class="text-dark">Vidoe</strong>.
+                    <small class="mt-0 mb-0"><a target="_blank" href="https://www.templateshub.net">Templates Hub</a>
+                    </small>
+                </p>
+
+            </div>
+        </div>
+    </footer>
+</div>
+<!-- /.content-wrapper -->
+{% endblock content %}

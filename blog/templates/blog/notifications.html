@@ -1,0 +1,120 @@
+{% extends "blog/base.html" %}
+{% load humanize %}
+{% load static %} {% block content %}
+
+<div id="content-wrapper">
+    <div class="container-fluid upload-details">
+        <div class="row">
+            <div class="col-md-8">
+                {% if notifications %}
+                <div class="main-title">
+                    <div class="btn-group float-right right-action">
+                        <a href="#" class="right-action-link text-gray" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Sort by <i class="fa fa-caret-down" aria-hidden="true"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href="#"><i class="fas fa-fw fa-star"></i> &nbsp; Top Rated</a>
+                            <a class="dropdown-item" href="#"><i class="fas fa-fw fa-signal"></i> &nbsp; Viewed</a>
+                            <a class="dropdown-item" href="#"><i class="fas fa-fw fa-times-circle"></i> &nbsp; Close</a>
+                        </div>
+                    </div>
+                    <h5>Notifications</h5>
+                </div><br>
+                {% for notification in notifications %}
+                {% if notification.notification_type == 2 %}
+                <div class="single-video-info-content box mb-3">
+                    <div style="float: right;">
+                        <a href="{% url 'delete-notification' notification.id %}"><i class="fas fa-times-circle"></i></a>
+                    </div>
+                    <div class="dropdown-item">
+                        <div class="row no-gutters">
+
+                            <div class="col-2 profile-img">
+                                {% if notification.sender.profile.image %}
+                                <img class="img-author" src="{{ notification.sender.profile.image.url }}" />{% else %}
+                                <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image"> {% endif %}
+                            </div>
+                            <div class="col-6">
+                                <b><a href="">{{ notification.sender.username }}</a></b> Commented on {{ notification.post.title }}
+                                {{ notification.text_preview }}
+                                <br>
+                                <small>{{ notification.date|naturaltime }}</small>
+                            </div>
+                            <div class="col-4 video-card-image">
+                                <a class="play-icon" href="#"><i class="fas fa-play-circle"></i></a>
+                                <a href="#"><img class="img-fluid" src="{{notification.post.photo.url}}" height="80" width="100%" alt=""></a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div><br>
+                {% endif %}
+
+                {% if notification.notification_type == 3 %}
+                <div class="single-video-info-content box mb-3">
+                    <div style="float: right;">
+                        <a href="{% url 'delete-notification' notification.id %}"><i class="fas fa-times-circle"></i></a>
+                    </div>
+                    <div class="dropdown-item">
+                        <div class="row no-gutters">
+                            <div class="col-2 profile-img">
+                                {% if notification.sender.profile.image %}
+                                <img class="img-author" src="{{ notification.sender.profile.image.url }}" />{% else %}
+                                <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image"> {% endif %}
+                            </div>
+                            <div class="col-6">
+                                <b><a href="">{{ notification.sender.username }}</a></b> Followed you.
+                                <br>
+                                <small>{{ notification.date|naturaltime }}</small>
+                            </div>
+                            <div class="col-4 video-card-image">
+                                <a class="play-icon" href="#"><i class="fas fa-play-circle"></i></a>
+                                <a href="#"><img class="img-fluid" src="{{notification.sender.profile.image.url}}" alt=""></a>
+
+                            </div>
+                        </div></div>
+                </div><br>
+                {% endif %}
+                {% if notification.notification_type == 1 %}
+                <div class="single-video-info-content box mb-3">
+                    <div style="float: right;">
+                        <a href="{% url 'delete-notification' notification.id %}"><i class="fas fa-times-circle"></i></a>
+                    </div>
+                    <div class="dropdown-item">
+                        <div class="row no-gutters">
+                            <div class="col-2 profile-img">
+                                {% if notification.sender.profile.image %}
+                                <img class="img-author" src="{{ notification.sender.profile.image.url }}" />{% else %}
+                                <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image"> {% endif %}
+                            </div>
+                            <div class="col-6" >
+                                <b><a href="">{{ notification.sender.username }}</a></b>  Liked {{ notification.post.title }}.
+                                <br>
+                                <small>{{ notification.date|naturaltime }}</small>
+                            </div>
+                            <div class="col-4 video-card-image">
+                                <a class="play-icon" href="#"><i class="fas fa-play-circle"></i></a>
+                                <a href="#"><img class="img-fluid" src="{{notification.post.photo.url}}"  height="163" width="100"  alt=""></a>
+                            </div>
+                        </div>
+                    </div>
+                </div><br>
+                {% endif %}
+                {% endfor %}
+                {% else %}
+                <div class="col-md-8 mx-auto text-center  pt-4 pb-5">
+                    <h1><img alt="404" src="/static/images/nonf.png" class="img-fluid"></h1>
+                    <h5>No new notifications yet.</h5>
+
+                </div>
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+    <!-- Sticky Footer -->
+</div>
+<!-- /.content-wrapper -->
+{% endblock content %}
+

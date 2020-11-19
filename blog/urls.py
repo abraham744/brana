@@ -1,30 +1,50 @@
-"""blog URL Configuration
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/2.0/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
-from django.contrib import admin
-from django.urls import path,include
-from django.conf import settings
-from django.conf.urls.static import static
-
-
-from article import views
+from django.urls import path
+from .views import (
+    PostListView,
+    PostDetailView,
+    AlbumCreateView,
+    PhotoCreateView,
+    VideoCreateView,
+    PostUpdateView,
+    PostDeleteView,
+    Favorited_View,
+    CategoryPostView,
+    CategoryView, CategoryVideoView, PlaylistView, MemeCreateView, CategoryUpdateView, CategoryDeleteView,
+    WatchVideoView)
+from . import views
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('',views.index,name = "index"),
-    path('about/',views.about,name = "about"),
-    path('articles/',include("article.urls")),
-    path('user/',include("user.urls")),
+    path('', PostListView.as_view(), name='blog-home'),
+    #path('user/<str:username>/', UserPostListView.as_view(), name='user-posts'),
+    path('playlist/<str:username>/', PlaylistView.as_view(), name='user-playlist'),
+    path('album/<str:username>/', CategoryView.as_view(), name='user-category'),
+    path('album/<str:name>/post/', CategoryPostView.as_view(), name='category-posts'),
+    path('playlist/<str:name>/post/', CategoryVideoView.as_view(), name='category-videos'),
+    path('watch/', WatchVideoView.as_view(), name='watch-videos'),
+    path('favorited/<str:username>/post/',Favorited_View.as_view(), name='favorited-posts'),
+    path('post/<int:pk>/', PostDetailView.as_view(), name='post_detail'),
+    path('category/new/', AlbumCreateView.as_view(), name='album-create'),
+    path('post/video/new/', VideoCreateView.as_view(), name='video-create'),
+    path('post/photo/new/', PhotoCreateView.as_view(), name='photo-create'),
+    path('post/meme/new/', MemeCreateView.as_view(), name='meme-create'),
+    path('post/<int:pk>/update/', PostUpdateView.as_view(), name='post-update'),
+    path('post/<int:pk>/delete/', PostDeleteView.as_view(), name='post-delete'),
+    path('album/<int:pk>/update/', CategoryUpdateView.as_view(), name='album-update'),
+    path('album/<int:pk>/delete/', CategoryDeleteView.as_view(), name='album-delete'),
+
+    path('notifications/', views.ShowNOtifications, name='show-notifications'),
+    path('notifications/<noti_id>/delete', views.DeleteNotification, name='delete-notification'),
+
+    path('chat', views.Inbox, name='inbox'),
+    path('chat/directs/<username>', views.Directs, name='directs'),
+    path('chat/new/', views.UserSearch, name='usersearch'),
+    path('chat/new/<username>', views.NewConversation, name='newconversation'),
+    path('chat/send/', views.SendDirect, name='send_direct'),
+
+    path('post/<int:pk>/comment/', views.add_reply_to_comment, name='add_reply'),
+    path('comment/<int:pk>/approve/', views.comment_approve, name='comment_approve'),
+    path('comment/<int:pk>/remove/', views.comment_remove, name='comment_remove'),
+    path('<int:pk>/profile/', views.profile, name='profile_me'),
+    path('upload/', views.uploadWhat, name='upload'),
+    path('post/<int:pk>/like', views.LikeView, name='like_post'),
+    path('post/<int:pk>/favorite', views.favorite, name='postfavorite')
 ]
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

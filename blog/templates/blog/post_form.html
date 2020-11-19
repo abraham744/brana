@@ -1,0 +1,54 @@
+{% extends "blog/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+         <div id="content-wrapper">
+            <div class="container-fluid upload-details">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <form method="post" enctype="multipart/form-data">{% csrf_token %}
+                        <div class="osahan-form">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                      {{ form|crispy }} {{form.media}}
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="osahan-area text-center mt-3">
+                            <button class="btn btn-outline-primary" type="submit">Save Changes</button>
+                        </div>
+                       </form>
+                        <hr>
+                        <div class="terms text-center">
+                            <p class="mb-0">There are many variations of passages of Lorem Ipsum available, but the majority <a href="#">Terms of Service</a> and <a href="#">Community Guidelines</a>.</p>
+                            <p class="hidden-xs mb-0">Ipsum is therefore always free from repetition, injected humour, or non</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.container-fluid -->
+            <!-- Sticky Footer -->
+            <footer class="sticky-footer">
+                <div class="container">
+                    <div class="row no-gutters">
+                        <div class="col-lg-6 col-sm-6">
+                            <p class="mt-1 mb-0"><strong class="text-dark">Vidoe</strong>.
+                                <small class="mt-0 mb-0"><a target="_blank" href="https://www.templateshub.net">Templates Hub</a>
+                           </small>
+                            </p>
+                        </div>
+                        <div class="col-lg-6 col-sm-6 text-right">
+                            <div class="app">
+                                <a href="#"><img alt="" src="img/google.png"></a>
+                                <a href="#"><img alt="" src="img/apple.png"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+        <!-- /.content-wrapper -->
+{% endblock content %}

@@ -1,0 +1,231 @@
+{% extends "blog/base.html" %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+<div id="content-wrapper">
+    <div class="container-fluid pb-0">
+        <div class="top-mobile-search">
+            <div class="row">
+                <div class="col-md-12">
+                    <form class="mobile-search">
+                        <div class="input-group">
+                            <input type="text" placeholder="Search for..." class="form-control">
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-dark"><i class="fa-fast-forward"></i></button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="top-category section-padding mb-4">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="main-title">
+                        <div class="btn-group float-right right-action">
+                            <a href="#" class="right-action-link text-gray" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="#"><i class="fas fa-fw fa-star"></i> &nbsp; Top Rated</a>
+                                <a class="dropdown-item" href="#"><i class="fas fa-fw fa-signal"></i> &nbsp; Viewed</a>
+                                <a class="dropdown-item" href="#"><i class="fas fa-fw fa-times-circle"></i> &nbsp; Close</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="owl-carousel owl-carousel-category">
+                        {% for friend in friends %}
+                        <div class="item">
+                            <div class="category-item">
+                                <a href="{% url 'profile_pk'  friend.pk%}">
+                                    <img class="img-fluid" src="{{ friend.profile.image.url }}" alt="">
+                                    <h6>{{friend.username}}</h6>
+                                    <p>74,853 view</p>
+                                </a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        <div class="item">
+                            <div class="category-item">
+                                <a href="#">
+                                    <img class="img-fluid" src="/static/img/s1.png" alt="">
+                                    <h6>Your Life</h6>
+                                    <p>74,853 views</p>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="category-item">
+                                <a href="#">
+                                    <img class="img-fluid" src="/static/img/s2.png" alt="">
+                                    <h6>Unboxing Cool</h6>
+                                    <p>74,853 views</p>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="category-item">
+                                <a href="#">
+                                    <img class="img-fluid" src="/static/img/s3.png" alt="">
+                                    <h6>Service Reviewing</h6>
+                                    <p>74,853 views</p>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="category-item">
+                                <a href="#">
+                                    <img class="img-fluid" src="/static/img/s4.png" alt="">
+                                    <h6>Gaming <span title="" data-placement="top" data-toggle="tooltip" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></span></h6>
+                                    <p>74,853 views</p>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="category-item">
+                                <a href="#">
+                                    <img class="img-fluid" src="/static/img/s5.png" alt="">
+                                    <h6>Technology Tutorials</h6>
+                                    <p>74,853 views</p>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="category-item">
+                                <a href="#">
+                                    <img class="img-fluid" src="/static/img/s6.png" alt="">
+                                    <h6>Singing</h6>
+                                    <p>74,853 views</p>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="category-item">
+                                <a href="#">
+                                    <img class="img-fluid" src="/static/img/s7.png" alt="">
+                                    <h6>Cooking</h6>
+                                    <p>74,853 views</p>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="category-item">
+                                <a href="#">
+                                    <img class="img-fluid" src="/static/img/s8.png" alt="">
+                                    <h6>Traveling</h6>
+                                    <p>74,853 views</p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% for user in users %}
+        <div class="channels-card">
+            <div class="channels-card-image">
+                <a href="#"><img class="img-fluid" src="{{ user.profile.image.url }}" alt=""></a>
+            </div>
+            <div class="channels-card-body">
+                <div class="channels-title">
+                    <a href="#">{{ user.username }} <span title="" data-placement="top" data-toggle="tooltip" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></span></a>
+                </div>
+                <div class="channels-view">
+                    {% if user.is_authenticated %}
+                    <div class="channels-card-image-btn"><a href="{% url 'newconversation' user.username %}"><button type="button" class="btn btn-success btn-sm border-none">Message</button></a></div>
+                    {% if not user in friends %}
+                    <div class="channels-card-image-btn"><a href="{% url 'change_friends' 'add' user.pk %}"><button type="button" class="btn btn-success btn-sm border-none">Follow</button></a></div>
+                    {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        <hr>
+        <div class="video-block section-padding">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="main-title">
+                        <div class="btn-group float-right right-action">
+                            <a href="#" class="right-action-link text-gray" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Sort by <i class="fa fa-caret-down" aria-hidden="true"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="#"><i class="fas fa-fw fa-star"></i> &nbsp; Top Rated</a>
+                                <a class="dropdown-item" href="#"><i class="fas fa-fw fa-signal"></i> &nbsp; Viewed</a>
+                                <a class="dropdown-item" href="#"><i class="fas fa-fw fa-times-circle"></i> &nbsp; Close</a>
+                            </div>
+                        </div>
+                        <h6>Featured Watchlist</h6>
+                    </div>
+                </div>
+                {% for post in posts %}
+                {% if post.video %}
+                <div class="col-xl-3 col-sm-6 mb-3">
+                    <div class="video-card">
+                        <div class="video-card-image">
+                            <a class="play-icon" href="#"><i class="fas fa-play-circle"></i></a>
+                            {% if post.photo %}<a href="{% url 'post_detail' post.id %}">
+                            <img class="img-fluid" src="{{post.photo.url}}"  width="100%" height="169" alt="">   </a>{% else %}
+                            <a href="{% url 'post_detail' post.id %}">  <video  width="100%" height="169" >
+                                <source src="{{post.video.url}}" type="video/mp4"> Your browser does not support the video tag.
+                            </video></a>{% endif %}
+                            <div class="time"> <time id="duration">00:00</time></div>
+                        </div>
+                        <div class="video-card-body">
+                            <div class="video-title">
+                                <img class="img-author" src="{{post.author.profile.image.url}}" alt="">
+                                <a href="{% url 'post_detail' post.id %}">{{post.title}}</a>
+                            </div>
+                            <div class="video-page text-success">
+                                {{post.category}} <a title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></a>
+                            </div>
+                            <div class="video-view">
+                                1.8M views &nbsp;<i class="fas fa-calendar-alt"></i> 11 Months ago
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+
+                <div class="col-xl-3 col-sm-6 mb-3">
+                    <div class="video-card">
+                        <div class="video-card-image">
+                            <a class="play-icon" href="#"><i class="fas fa-play-circle"></i></a>
+                            <a href="#"><img class="img-fluid" src="/static/img/v8.png" alt=""></a>
+                            <div class="time">3:50</div>
+                        </div>
+                        <div class="video-card-body">
+                            <div class="video-title">
+                                <a href="#">There are many variations of passages of Lorem</a>
+                            </div>
+                            <div class="video-page text-success">
+                                Education <a title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></a>
+                            </div>
+                            <div class="video-view">
+                                1.8M views &nbsp;<i class="fas fa-calendar-alt"></i> 11 Months ago
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr class="mt-0">
+
+    </div>
+    <!-- /.container-fluid -->
+    <!-- Sticky Footer -->
+    <footer class="sticky-footer">
+        <p class="mt-1 mb-0"><strong class="text-dark">Ethel</strong>.
+            <small class="mt-0 mb-0"><a target="_blank" href="https://www.templateshub.net">Term and policy</a>
+            </small>
+            <small class="mt-0 mb-0"><a target="_blank" href="https://www.templateshub.net">Copyright 2020</a>
+            </small>
+        </p>
+    </footer>
+</div>
+
+{% endblock content %}

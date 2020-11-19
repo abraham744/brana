@@ -1,0 +1,173 @@
+
+{% extends "blog/base.html" %}
+{% load static %}
+{% block content %}
+<div class="single-channel-page" id="content-wrapper">
+    <div class="single-channel-image">
+        <img  alt=""  width="100%" height="300" src="{{users.profile.cover_image.url}}">
+        <div class="channel-profile">
+            <img class="channel-profile-img" alt="" src="{{users.profile.image.url}}">
+            <div class="social hidden-xs">
+                Social &nbsp;
+                <a class="fb" href="#">Facebook</a>
+                <a class="tw" href="#">Twitter</a>
+                <a class="gp" href="#">Google</a>
+            </div>
+        </div>
+    </div>
+    <div class="single-channel-nav">
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <a class="channel-brand" href="#">{{users.username}}<span title="" data-placement="top" data-toggle="tooltip" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></span></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item dropdown ">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Profile
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="#">View Profile</a>
+                            <a class="dropdown-item" href="{% url 'profile' %}">Edit Profile</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                        </div>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" href="{% url 'user-category' users.username %}">Gallery <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Photo</a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" href="{% url 'user-playlist' users.username %}">Playlist</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Video</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Favorites</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+
+                </ul>
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control form-control-sm mr-sm-1" type="search" placeholder="Search" aria-label="Search"><button class="btn btn-outline-success btn-sm my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button> &nbsp;&nbsp;&nbsp;
+                    <button class="btn btn-outline-danger btn-sm" type="button">Subscribe <strong>1.4M</strong></button>
+                </form>
+            </div>
+        </nav>
+    </div>
+    <div class="container-fluid" data-aos="fade" data-aos-delay="500">
+        <div class="video-block section-padding">
+            <div class="main-title">
+                <div class="btn-group float-right right-action">
+
+                    <a href="#" class="right-action-link text-gray" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Sort by <i class="fa fa-caret-down" aria-hidden="true"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item" href="#"><i class="fas fa-fw fa-star"></i> &nbsp; Top Rated</a>
+                        <a class="dropdown-item" href="#"><i class="fas fa-fw fa-signal"></i> &nbsp; Viewed</a>
+                        <a class="dropdown-item" href="#"><i class="fas fa-fw fa-times-circle"></i> &nbsp; Close</a>
+                    </div>
+                </div>
+                <h6>Playlists<a href="{% url 'album-create' %}"> <i class="fas fa-plus-circle fa-fw"></i></a></h6>
+                <hr>
+            </div>
+            <div class="swiper-container images-carousel">
+                <div class="swiper-wrapper">
+                    {% for album in albums %}
+                    <div class="swiper-slide">
+                        <div class="image-wrap">
+                            <div class="image-info">
+                                <h2 class="mb-3">{{album.name}}</h2>
+                                <a href="{% url 'category-videos' album.name %}" class="btn btn-outline-white py-2 px-4">More Videos</a>
+                            </div>
+                            <img src="{{album.photo.url}}" alt="Image">
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <div class="swiper-slide">
+                        <div class="image-wrap">
+                            <div class="image-info">
+                                <h2 class="mb-3">Portrait</h2>
+                                <a href="#" class="btn btn-outline-white py-2 px-4">More Videos</a>
+                            </div>
+                            <img src="/static/images/img_2.jpg" alt="Image">
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="image-wrap">
+                            <div class="image-info">
+                                <h2 class="mb-3">People</h2>
+                                <a href="single.html" class="btn btn-outline-white py-2 px-4">More Photos</a>
+                            </div>
+                            <img src="/static/images/img_3.jpg" alt="Image">
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="image-wrap">
+                            <div class="image-info">
+                                <h2 class="mb-3">Architecture</h2>
+                                <a href="single.html" class="btn btn-outline-white py-2 px-4">More Photos</a>
+                            </div>
+                            <img src="/static/images/img_4.jpg" alt="Image">
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="image-wrap">
+                            <div class="image-info">
+                                <h2 class="mb-3">Animals</h2>
+                                <a href="single.html" class="btn btn-outline-white py-2 px-4">More Photos</a>
+                            </div>
+                            <img src="/static/images/img_5.jpg" alt="Image">
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="image-wrap">
+                            <div class="image-info">
+                                <h2 class="mb-3">Sports</h2>
+                                <a href="single.html" class="btn btn-outline-white py-2 px-4">More Photos</a>
+                            </div>
+                            <img src="/static/images/img_6.jpg" alt="Image">
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="image-wrap">
+                            <div class="image-info">
+                                <h2 class="mb-3">Travel</h2>
+                                <a href="single.html" class="btn btn-outline-white py-2 px-4">More Photos</a>
+                            </div>
+                            <img src="/static/images/img_7.jpg" alt="Image">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="swiper-pagination"></div>
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-scrollbar"></div>
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+    <!-- Sticky Footer -->
+    <footer class="sticky-footer ml-0">
+        <div class="container">
+            <div class="row no-gutters">
+                <p class="mt-1 mb-0"><strong class="text-dark">Vidoe</strong>.
+                    <small class="mt-0 mb-0"><a target="_blank" href="https://www.templateshub.net">Templates Hub</a>
+                    </small>
+                </p>
+
+            </div>
+        </div>
+    </footer>
+</div>
+<!-- /.content-wrapper -->
+{% endblock content %}
+

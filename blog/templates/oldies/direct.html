@@ -1,0 +1,171 @@
+{% extends "blog/base.html" %} {% load static %} {% block content %}
+<div class="single-channel-page" id="content-wrapper">
+    <div class="site-section" data-aos="fade">
+        <div class="container mt-5">
+            <div class="row">
+
+                <div id="wrap-chat">
+                    <div class="card chat-body">
+                        <div class="row mod-row-right">
+                            <div class="col-md-4 contact dark">
+                                <!-- list user -->
+                                <div class="list-contact">
+                                    <div id="search">
+                                        <input type="text" class="form-control" placeholder="Search...">
+                                        <div class="append-btn-search">
+                                            <i class="fas fa-fw fa-search"></i>
+                                        </div>
+                                        <i id="hide-contact" class="material-icons">close </i>
+                                    </div>
+                                    <div id="bar-f-l">
+                                        By: <span class="badge badge-custom badge-active">Recent</span> <span class="badge badge-custom">Name</span> |
+                                        <span class="badge badge-custom ">Off</span> <span class="badge badge-custom">On</span> <span class="badge badge-custom badge-active">All</span>
+
+
+                                    </div>
+                                    <ul class="list-unstyled">
+
+                                        {% for message in messages %}
+                                        <li class="media contact-active p-2">
+                                            <a class="{% if active_direct == message.user.username %}is-active{% endif %}" href="{% url 'directs' message.user.username %}">
+<!--                                                {% if message.user.profile.image %}-->
+<!--                                                    <img class="mr-3 avatar online" src="{{ message.user.profile.image.url }}" alt="Generic placeholder image">{% endif %}-->
+                                                <div class="media-body">
+                                                <h6 class="mt-0 mb-1 name-contact">Linda <span>12/7/18 8:58 AM</span></h6>
+                                                <p>Cras sit amet nibh libero, in gravida</p>
+                                            </div>
+                                        </li>
+                                        {% endfor %}
+                                        <li class="media p-2">
+                                            <img class="mr-3 avatar offline" src="img/3.png" alt="Generic placeholder image">
+                                            <div class="media-body">
+                                                <h6 class="mt-0 mb-1 name-contact ">Jamal <span>12/7/18 8:58 AM</span></h6>
+                                                <p>Cras sit amet nibh libero, in gravida</p>
+                                            </div>
+                                        </li>
+                                        <li class="media p-2">
+                                            <img class="mr-3 avatar online" src="img/4.jpeg" alt="Generic placeholder image">
+                                            <div class="media-body">
+                                                <h6 class="mt-0 mb-1 name-contact">Cristian <span>12/7/18 8:58 AM</span></h6>
+                                                <p>Sit amet nibh libero, in gravida</p>
+
+                                            </div>
+                                        </li>
+                                        <li class="media p-2 ">
+                                            <img class="mr-3 avatar online" src="img/5.jpeg" alt="Generic placeholder image">
+                                            <div class="media-body">
+                                                <h6 class="mt-0 mb-1 name-contact">Jack <span>12/7/18 8:58 AM</span></h6>
+                                                <p>Cras sit amet nibh libero, in gravida</p>
+                                            </div>
+                                        </li>
+                                        <li class="media p-2">
+                                            <img class="mr-3 avatar offline" src="img/6.jpeg" alt="Generic placeholder image">
+                                            <div class="media-body">
+                                                <h6 class="mt-0 mb-1 name-contact">Angelica <span>12/7/18 8:58 AM</span></h6>
+                                                <p>Cras sit amet, in gravida</p>
+                                            </div>
+                                        </li>
+                                        <li class="media p-2">
+                                            <img class="mr-3 avatar offline" src="img/7.jpeg" alt="Generic placeholder image">
+                                            <div class="media-body">
+                                                <h6 class="mt-0 mb-1 name-contact">Marcia <span>12/7/18 8:58 AM</span></h6>
+                                                <p>Cras sit amet nibh libero,</p>
+
+                                            </div>
+                                        </li>
+
+                                    </ul>
+                                </div>
+                                <!-- list user -->
+                            </div>
+                            <div class="col-md-8 col-12 no-pad dark">
+                                <div id="chatbox" class="dark">
+                                    <div id="filter">
+                                        <div class="row">
+                                            <div class="col text-left">
+                                                <i id="show-contact" class="material-icons">
+                          list
+                        </i>
+                                                <div id="bar-f">
+                                                    By: <span class="badge badge-custom badge-active">Recent</span> <span class="badge badge-custom">Name</span> | <span class="badge badge-custom ">Off</span> <span class="badge badge-custom">On</span>
+                                                    <span class="badge badge-custom badge-active">All</span>
+                                                </div>
+                                            </div>
+                                            <div class="col text-right">
+                                                <i class="material-icons"> add_a_photo </i>
+                                                <i class="material-icons" id="dropmenu-custom"> more_verts     </i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="message-container">
+                                        <!-- Drop menu -->
+                                        <div id="drop-menu" class="card">
+                                            <div class="card-body text-right">
+                                                <ul>
+                                                    <li id="ligth">
+                                                        Light <span class="badge badge-ligth">D</span>
+                                                    </li>
+                                                    <li id="dark">
+                                                        Dark <span class="badge badge-dark">D</span>
+                                                    </li>
+                                                    <li id="hot">
+                                                        Heat <span class="badge badge-hot">D</span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <!-- drop menu -->
+                                        <ul>
+                                            {% for direct in directs %}
+
+                                            <li>
+                                                <div class="alert alert-primary me">
+                                                    {{ direct.body }}
+                                                </div>
+                                                <span class="me-date">sent on: 9/27/18 10:52 AM</span>
+                                            </li>
+
+
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                    <div id="input-message">
+                                        <input type="text" class="form-control" placeholder="Your message">
+                                        <button class="btn btn-secondary btn-sm" type="submit">
+                        <i class="material-icons">
+                            near_me
+                        </i>
+                    </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--col-md-12-->
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+    <!-- Sticky Footer -->
+    <footer class="sticky-footer ml-0">
+        <div class="container">
+            <div class="row no-gutters">
+                <div class="col-lg-6 col-sm-6">
+                    <p class="mt-1 mb-0"><strong class="text-dark">Vidoe</strong>.
+                        <small class="mt-0 mb-0"><a target="_blank" href="https://www.templateshub.net">Templates Hub</a>
+                                            </small>
+                                            </p>
+                                </div>
+                                <div class="col-lg-6 col-sm-6 text-right">
+                                    <div class="app">
+                                        <a href="#"><img alt="" src="img/google.png"></a>
+                                        <a href="#"><img alt="" src="img/apple.png"></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </footer>
+                    </div>
+{% endblock %}
