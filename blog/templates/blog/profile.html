@@ -1,38 +1,51 @@
-
-{% extends "blog/base.html" %}
-{% load static %}
-{% block content %}
+ {% extends "blog/base.html" %} {% load static %} {% block content %}
 
 <div class="single-channel-page" id="content-wrapper">
     <div class="single-channel-image">
-        <img  alt=""  width="100%" height="300" src="{{users.profile.cover_image.url}}">
-        <div class="channel-profile">
-            <img class="channel-profile-img" alt="" src="{{users.profile.image.url}}">
+        <img class="img-fluid" alt="" src="{{users.profile.cover_image.url}}">
+        <div class="channel-profile">{% if users.username != user.username and  users in blacklists or users in blacklisters %}
+            <img class="channel-profile-img" alt="" src="/static/img/unknown.PNG">{% else %}
+            <img class="channel-profile-img" alt="" src="{{users.profile.image.url}}">{% endif %}
             <div class="social hidden-xs">
-                Social &nbsp;
-                <a class="fb" href="#">Facebook</a>
-                <a class="tw" href="#">Twitter</a>
-                <a class="gp" href="#">Google</a>
+                <form class="form-inline my-2 my-lg-0">
+                     <div style="float: right;" >
+                            {% if user.is_authenticated %}
+                            {% if users.username != user.username and not users in blacklists and not users in blacklisters %}
+                            <a href="{% url 'newconversation' users.username %}" class="btn btn btn-primary" type="button"><i class="fas fa-envelope"></i> Message</a>
+                            {% if not users in friends %}
+                            <a href="{% url 'change_friends' 'add' users.pk %}" class="btn btn btn-primary" type="button"><i class="fas fa-user-plus"></i> Follow</a>
+                            {% elif users in friends %}
+                            <a href="{% url 'change_friends' 'remove' users.pk %}" class="btn btn btn-outline-danger" type="button"><i class="fas fa-user-minus"></i></a>
+                            {% endif %}{% endif %}
+                            {% endif %}
+                        </div>
+                </form>
             </div>
         </div>
     </div>
     <div class="single-channel-nav">
         <nav class="navbar navbar-expand-lg navbar-light">
-            <a class="channel-brand" href="#">{{users.username}}<span title="" data-placement="top" data-toggle="tooltip" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></span></a>
+            <a class="channel-brand" href="#">{{users.firstname}} {{users.lastname}}<span title="" data-placement="top" data-toggle="tooltip" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></span></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item dropdown ">
+                    <li class="nav-item dropdown active">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Profile
                         </a>
                         <div class="dropdown-menu " aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">View Profile</a>
+                            <a class="dropdown-item" href="{% url 'profile_me' users.pk %}">View Profile</a>
+                              {% if  users.username == user.username %}
                             <a class="dropdown-item" href="{% url 'profile' %}">Edit Profile</a>
+                              {% endif %}
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Something else here</a>
+                            {% if users in blacklists and users.username != user.username %}
+                            <a class="dropdown-item" href="{% url 'block_pk' users.pk %}">Unblock user</a>
+                            {% elif not users in blacklists %}
+                             <a class="dropdown-item" href="{% url 'block_pk' users.pk %}">Block user</a>
+                            {% endif %}
                         </div>
                     </li>
                     <li class="nav-item">
@@ -45,99 +58,166 @@
                     <li class="nav-item ">
                         <a class="nav-link" href="{% url 'user-playlist' users.username %}">Playlist</a>
                     </li>
+                    {% if users.username == user.username %}
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Favorites</a>
-                    </li>
+                        <a class="nav-link" href="{% url 'favorited-posts' users.username %}">Favorites</a>
+                    </li>{% endif %}
                     <li class="nav-item">
                         <a class="nav-link" href="#">About</a>
                     </li>
 
                 </ul>
-                <form class="form-inline my-2 my-lg-0">
-                    <input class="form-control form-control-sm mr-sm-1" type="search" placeholder="Search" aria-label="Search"><button class="btn btn-outline-success btn-sm my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button> &nbsp;&nbsp;&nbsp;
-                    <button class="btn btn-outline-danger btn-sm" type="button">Subscribe <strong>1.4M</strong></button>
-                </form>
-            </div>
-        </nav> <div class="container-fluid pb-0">
-        <div class="video-block section-padding">
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="single-video-left">
-                        <div class="single-video-info-content box mb-3">
-                            <h6>Cast:</h6>
-                            <p>Nathan Drake , Victor Sullivan , Sam Drake , Elena Fisher</p>
-                            <h6>Category :</h6>
-                            <p>Gaming , PS4 Exclusive , Gameplay , 1080p</p>
-                            <h6>About :</h6>
-                            <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved overVarious versions have evolved over the years, sometimes </p>
-                            <h6>Tags :</h6>
-                            <p class="tags mb-0">
-                                <span><a href="#">Uncharted 4</a></span>
-                                <span><a href="#">Playstation 4</a></span>
-                                <span><a href="#">Gameplay</a></span>
-                                <span><a href="#">1080P</a></span>
-                                <span><a href="#">ps4Share</a></span>
-                                <span><a href="#">+ 6</a></span>
-                            </p>
+                  <form class="mobile-search">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search for..." name="q"  value="{{ request.GET.q }}">
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-primary" ><i class="fas fa-search"></i></button>
+                            </div>
                         </div>
-
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="single-video-right">
+                    </form>
+            </div>
+        </nav>
+        <div class="container-fluid pb-0">
+            <div class="video-block section-padding">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="single-video-left">
+                            <div class="single-video-info-content box mb-3">
+                                 <div class="row">
+                                 <div class="col-4">
+                                     <h6>Username</h6>
+                                     <p>{{users.username}}</p>
+                                 </div>
+                                 <div class="col-4">
+                                      <h6>Email</h6>
+                                     <p>{{users.email}}</p>
+                                 </div>
+                                 </div><br>
+                                <h6>About :</h6>
+                                <p>{{users.profile.about}}</p>
+                                <h6>Interested in :</h6>
+                                <p class="tags mb-0">
+                                    <span><a href="#">Educations</a></span>
+                                    <span><a href="#">Sports</a></span>
+                                    <span><a href="#">Gameplay</a></span>
+                                    <span><a href="#">1080P</a></span>
+                                    <span><a href="#">ps4Share</a></span>
+                                    <span><a href="#">+ 6</a></span>
+                                </p>
+                            </div>
+                        </div>
                         <div class="row">
-                            <div class="col-md-12">
-                                <div class="channels-card">
-                                    <div class="d-flex justify-content-center h-100">
+                            <div class="col-xl-4 col-sm-4 mb-3">
+                                <div class="card text-white bg-success o-hidden h-100 border-none">
+                                    <div class="card-body">
+                                        <div class="card-body-icon">
+                                            <i class="fas fa-fw fa-list-alt"></i>
+                                        </div>
+                                        <div class="mr-5"><b>121</b> Categories</div>
+                                    </div>
+                                    <a class="card-footer text-white clearfix small z-1" href="#">
+                                        <span class="float-left">View Details</span><i class="fas fa-angle-right"></i>
+                                        <span class="float-right">View Details <i class="fas fa-angle-right"></i></span>
+                                    </a>
+
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-sm-4 mb-3">
+                                <div class="card text-white bg-warning o-hidden h-100 border-none">
+                                    <div class="card-body">
+                                        <div class="card-body-icon">
+                                            <i class="fas fa-fw fa-video"></i>
+                                        </div>
+                                        <div class="mr-5"><b>156</b> Videos</div>
+                                    </div>
+                                    <a class="card-footer text-white clearfix small z-1" href="#">
+                                        <span class="float-left">View Details</span>
+                                        <span class="float-right">
+                        <i class="fas fa-angle-right"></i>
+                        </span>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-sm-4 mb-3">
+                                <div class="card text-white bg-danger o-hidden h-100 border-none">
+                                    <div class="card-body">
+                                        <div class="card-body-icon">
+                                            <i class="fas fa-fw fa-images"></i>
+                                        </div>
+                                        <div class="mr-5"><b>13</b> images</div>
+                                    </div>
+                                    <a class="card-footer text-white clearfix small z-1" href="#">
+                                        <span class="float-left">View Details</span>
+                                        <span class="float-right">
+                        <i class="fas fa-angle-right"></i>
+                        </span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="single-video-right">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="channels-card">
+                                        <div class="d-flex justify-content-center h-100">
                                             <div class="image_outer_container">
                                                 <div class="image_inner_container">
-                                                    <img height="50%" width="50%" src="{{users.profile.image.url}}" >
-                                                     <div class="green_icon"></div>
+                                                    <img height="50%" width="50%" src="{{users.profile.image.url}}">
+                                                    <div class="green_icon"></div>
                                                 </div>
                                             </div>
                                         </div>
 
-                                    <div class="channels-card-body">
-                                        <div class="channels-title">
-                                            <a href="{% url 'profile_me' users.pk %}">{{ users.username }}<span title="" data-placement="top" data-toggle="tooltip" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></span></a>
-                                            <br>
-                                        </div><br>
-                                        <div class="channels-view">
+                                        <div class="channels-card-body">
+                                            <div class="channels-title">
+                                                <a href="{% url 'profile_me' users.pk %}">{{ users.username }}<span title="" data-placement="top" data-toggle="tooltip" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></span></a>
+                                                <br>
+                                                <i><b>{{users.profile.bio}}</b></i>
+                                            </div><br>
+                                            <div class="channels-view">
 
-                                            <div class="row">
-                                                <!-- Note that for bootstrap all the rows are always 12 columns -->
-                                                <div class="col-6">
-                                                    {% if friends %}
-                                                    <div class="channels-card-image-btn"><button type="button" class="btn btn-success btn-sm border-none">Following</button> <button type="button" class="btn btn-warning btn-sm border-none"><strong>{{friends.count}}</strong></button></div>
-                                                    {% else %}
-                                                    <div class="channels-card-image-btn"><button type="button" class="btn btn-success btn-sm border-none">Following</button> <button type="button" class="btn btn-warning btn-sm border-none"><strong>0</strong></button></div>
+                                                <div class="row">
+                                                    <!-- Note that for bootstrap all the rows are always 12 columns -->
+                                                    <div class="col-6">
+                                                        {% if followings %}
+                                                        <div class="channels-card-image-btn"><button type="button" class="btn btn-success btn-sm border-none">Following</button> <button type="button" class="btn btn-warning btn-sm border-none"><strong>{{followings.count}}</strong></button></div>
+                                                        {% else %}
+                                                        <div class="channels-card-image-btn"><button type="button" class="btn btn-success btn-sm border-none">Following</button> <button type="button" class="btn btn-warning btn-sm border-none"><strong>0</strong></button></div>
+                                                        {% endif %}
+                                                    </div>
+                                                    <div class="col-6">
+                                                        {% if follower %}
+                                                        <div class="channels-card-image-btn"><button type="button" class="btn btn-success btn-sm border-none">Follower</button> <button type="button" class="btn btn-warning btn-sm border-none"><strong>{{follower.count}}</strong></button></div>
+                                                        {% else %}
+                                                        <div class="channels-card-image-btn"><button type="button" class="btn btn-success btn-sm border-none">Follower</button> <button type="button" class="btn btn-warning btn-sm border-none"><strong>0</strong></button></div>
+                                                        {% endif %}
+                                                    </div>
 
-                                                    {% endif %}
                                                 </div>
-                                                <div class="col-6">
-                                                    {% if friend %}
-                                                    <div class="channels-card-image-btn"><button type="button" class="btn btn-success btn-sm border-none">Follower</button> <button type="button" class="btn btn-warning btn-sm border-none"><strong>{{friend.count}}</strong></button></div>
-                                                    {% else %}
-                                                    <div class="channels-card-image-btn"><button type="button" class="btn btn-success btn-sm border-none">Follower</button> <button type="button" class="btn btn-warning btn-sm border-none"><strong>0</strong></button></div>
-                                                    {% endif %}
-                                                </div>
-
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
 
                         </div>
-
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    </div>
     <!-- /.container-fluid -->
+  <footer class="sticky-footer ml-0">
+            <div class="row no-gutters">
+                <p class="mt-1 mb-0"><strong class="text-dark">Branagram</strong>.
+                    <small class="mt-0 mb-0"><a target="_blank" href="#">Term and policy.</a>
+                    </small>
+                </p>
+            </div>
+    </footer>
 </div>
 <!-- /.content-wrapper -->
 {% endblock content %}
-

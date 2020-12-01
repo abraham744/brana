@@ -25,6 +25,7 @@ urlpatterns = [
     path('register/', user_views.register, name='register'),
     path('profile/', user_views.profile, name='profile'),
     path('profile/post/<int:pk>/', user_views.view_profile, name='profile_pk'),
+    path('profile/block/<int:pk>/', user_views.blacklist, name='block_pk'),
     path('connect/<str:operation>/<int:pk>/',user_views.change_friends,name='change_friends'),
     path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='users/logout.html'), name='logout'),

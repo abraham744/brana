@@ -9,7 +9,7 @@ from django.contrib.auth.models import User
 from django.template import loader
 from django.views.generic.edit import FormMixin
 
-from blog.models import Message, Category
+from blog.models import Message, Category, Tag
 from django.db.models import Q
 from blog.models import Notification
 
@@ -23,7 +23,7 @@ from django.views.generic import (
     DeleteView
 )
 
-from blog.form import CommentForm, PhotoForm, VideoForm, MemeForm, UpdateForm, ReplyForm
+from blog.form import CommentForm, PhotoForm, VideoForm, MemeForm, UpdateForm, ReplyForm, AlbumUpdateForm
 from .models import Post, Comment
 
 
@@ -44,33 +44,45 @@ class PostListView(ListView):
     def get(self, request):
         if request.user.is_authenticated:
             users = None
+            blacklists = None
+            blacklisters = None
+            follower = None
+            ffollower = None
+            blogs = None
             query = request.GET.get("q")
             if query:
                 users = User.objects.filter(Q(username__icontains=query))
+                for user in users:
+                    follow= Friend.objects.filter(current_user=user).first()
+                    if follow:
+                        follower = Friend.objects.filter(current_user=user).get(current_user=user).follower.all()
+                    # followings = Friend.objects.filter(current_user=user).first().following.all()
 
+                blogs = Post.objects.filter(Q(title__icontains=query))
             notifications = Notification.objects.filter(user=request.user).order_by('-date')
             count_notifications = Notification.objects.filter(user=request.user, is_seen=False).count()
-
             directs_count = Message.objects.filter(user=request.user, is_read=False).count()
+
             friend = Friend.objects.filter(current_user=request.user).first()
             if friend:
+                blacklists = Friend.objects.filter(current_user= request.user).first().blacklists.all()
+                blacklisters = Friend.objects.filter(current_user=request.user).first().blacklisters.all()
                 friends = friend.following.all()
                 friend = friend.follower.all()
-
             else:
                 friends = User.objects.none()
-            # friends = Friend.objects.filter(current_user = request.user)
             # friends = friend.users.all()
             myalbums = Category.objects.filter(author=request.user)
-            posts = Post.objects.all().filter(Q(author_id__in=friends) | Q(author= request.user)).order_by('?')
+            posts = Post.objects.all().filter(Q(author_id__in=friends) | Q(author=request.user)).order_by('?')
             myposts = Post.objects.filter(author=request.user).order_by('-date_posted')
-            args = {'posts': posts, 'myalbums': myalbums,'myposts': myposts, 'users': users, 'friend': friend, 'friends': friends,
-                    'directs_count': directs_count,
+            args = {'posts': posts, 'myalbums': myalbums, 'myposts': myposts, 'users': users, 'friend': friend,
+                    'friends': friends,'blacklists':blacklists,'blacklisters':blacklisters, 'blogs': blogs,
+                    'directs_count': directs_count,'ffollower':ffollower,'follower':follower,
                     'count_notifications': count_notifications, 'notifications': notifications}
             return render(request, self.template_name, args)
         else:
             users = None
-            posts = Post.objects.all().order_by('-date_posted')
+            posts = Post.objects.all().order_by('no_viewers')
             query = request.GET.get("q")
             if query:
                 users = User.objects.filter(Q(username__icontains=query))
@@ -91,9 +103,11 @@ class WatchVideoView(ListView):
                 friends = friend.following.all()
             else:
                 friends = User.objects.none()
-            return Post.objects.all().filter(Q(author_id__in=friends) | Q(author= self.request.user)).order_by('-date_posted')
+            return Post.objects.all().filter(Q(author_id__in=friends) | Q(author=self.request.user)).order_by(
+                '-date_posted')
         else:
             return Post.objects.all().order_by('?')
+
 
 class PlaylistView(ListView):
     model = Category
@@ -134,7 +148,7 @@ class CategoryPostView(ListView):
     paginate_by = 5
 
     def get_queryset(self):
-        name = get_object_or_404(Category, author= self.request.user, name=self.kwargs.get('name'))
+        name = get_object_or_404(Category, name=self.kwargs.get('name'))
         return Post.objects.filter(category=name).order_by('-date_posted')
 
 
@@ -145,7 +159,7 @@ class CategoryVideoView(ListView):
     paginate_by = 5
 
     def get_queryset(self):
-        name = get_object_or_404(Category, author= self.request.user,name=self.kwargs.get('name'))
+        name = get_object_or_404(Category, name=self.kwargs.get('name'))
         return Post.objects.filter(category=name).order_by('-date_posted')
 
 
@@ -156,6 +170,8 @@ class PostDetailView(FormMixin, DetailView):
     def get_context_data(self, *args, **kwargs):
         context = super(PostDetailView, self).get_context_data(**kwargs)
         stuff = get_object_or_404(Post, id=self.kwargs['pk'])
+        Post.objects.filter(viewers=self.request.user, is_seen=False).update(is_seen=True)
+        viewscount(self.request.user, stuff)
         favorited = False
 
         if self.request.user.is_authenticated:
@@ -165,24 +181,25 @@ class PostDetailView(FormMixin, DetailView):
 
         notifications = Notification.objects.filter(user=self.request.user).order_by('-date')
         count_notifications = Notification.objects.filter(user=self.request.user, is_seen=False).count()
-
+        total_comments = stuff.total_comments()
         total_likes = stuff.total_likes()
+        total_views = stuff.total_views()
         liked = False
         if stuff.likes.filter(id=self.request.user.id).exists():
             liked = True
         posts = Post.objects.filter(author=stuff.author).exclude(id=self.kwargs['pk']).order_by('-date_posted')
         context['user'] = self.request.user
         context['comments'] = Comment.objects.filter(post=self.object)
-
         context['form'] = self.get_form()
         context["total_likes"] = total_likes
+        context["total_views"] = total_views
+        context["total_comments"] = total_comments
         context["liked"] = liked
         context["favorited"] = favorited
         context["notifications"] = notifications
         context["count_notifications"] = count_notifications
         context["posts"] = posts
         return context
-
 
     def post(self, request, *args, **kwargs):
         post = get_object_or_404(Post, id=self.kwargs['pk'])
@@ -194,12 +211,15 @@ class PostDetailView(FormMixin, DetailView):
                 comment.post = post
                 comment.author = users
                 comment.save()
-                notify = Notification(post=post, sender=comment.author, user=post.author, notification_type=2)
+                post.hises.add(comment.author)
+                notify = Notification(post=post, text_preview=comment.text, sender=comment.author, user=post.author,
+                                      notification_type=2)
                 notify.save()
                 return redirect('post_detail', pk=self.kwargs['pk'])
         else:
             form = CommentForm()
             return redirect('post_detail', pk=self.kwargs['pk'])
+
     def form_valid(self, form):
         form.instance.post = self.object
         form.save()
@@ -218,8 +238,14 @@ def favorite(request, pk):
     return HttpResponseRedirect(reverse('post_detail', args=[str(pk)]))
 
 
+def viewscount(viewer, post):
+    post.viewers.add(viewer)
+    return None
+
+
 def LikeView(request, pk):
     post = get_object_or_404(Post, id=request.POST.get('post_id'))
+
     like = False
     if post.likes.filter(id=request.user.id).exists():
         post.likes.remove(request.user)
@@ -231,7 +257,54 @@ def LikeView(request, pk):
         notify = Notification(post=post, sender=request.user, user=post.author, notification_type=1)
         notify.save()
         like = True
+
     return HttpResponseRedirect(reverse('post_detail', args=[str(pk)]))
+
+
+def tags(request, tag_slug):
+    tag = get_object_or_404(Tag, slug=tag_slug)
+    posts = Post.objects.filter(tags=tag).order_by('-posted')
+
+    context = {
+        'posts': posts,
+        'tag': tag,
+    }
+
+    return HttpResponse(request, 'blog/tags.html', context)
+
+
+def dislikecomment(request, pk):
+    comment = get_object_or_404(Comment, id=request.POST.get('comment_id'))
+    dislike = False
+    if comment.dislikes.filter(id=request.user.id).exists():
+        comment.dislikes.remove(request.user)
+        notify = Notification.objects.filter(post=comment.post, sender=request.user, user=comment.author,
+                                             notification_type=5)
+        notify.delete()
+        dislike = False
+    else:
+        comment.likes.remove(request.user)
+        comment.dislikes.add(request.user)
+        # notification
+        dislike = True
+    return HttpResponseRedirect(reverse('post_detail', args=[str(comment.post.pk)]))
+
+
+def Likecomment(request, pk):
+    comment = get_object_or_404(Comment, id=request.POST.get('comment_id'))
+    like = False
+    if comment.likes.filter(id=request.user.id).exists():
+        comment.likes.remove(request.user)
+        notify = Notification.objects.filter(post=comment.post, sender=request.user, user=comment.author,
+                                             notification_type=5)
+        notify.delete()
+        like = False
+    else:
+        comment.likes.add(request.user)
+        comment.dislikes.remove(request.user)
+        # notification
+        like = True
+    return HttpResponseRedirect(reverse('post_detail', args=[str(comment.post.pk)]))
 
 
 class AlbumCreateView(LoginRequiredMixin, CreateView):
@@ -306,16 +379,31 @@ class MemeCreateView(LoginRequiredMixin, CreateView):
 def uploadWhat(request):
     return render(request, 'blog/upload.html', {'title': 'choose post items'})
 
-def profile(request,pk):
+
+@login_required
+def profile(request, pk):
+    blacklists = None
+    blacklisters = None
     if pk:
-        users = User.objects.get(pk=pk)
-        friend = Friend.objects.filter(current_user=users).first()
+        friend = Friend.objects.filter(current_user=request.user).first()
         if friend:
             friends = friend.following.all()
+            blacklists = friend.blacklists.all()
+            blacklisters = friend.blacklisters.all()
             friend = friend.follower.all()
         else:
             friends = User.objects.none()
-    args = {'users': users, 'friend': friend, 'friends': friends}
+        users = User.objects.get(pk=pk)
+        follower = None
+        followings = None
+        follow = Friend.objects.filter(current_user=users).first()
+        if follow:
+            followings = follow.following.all()
+            follower = follow.follower.all()
+        else:
+            friends = User.objects.none()
+
+    args = {'users': users, 'follower': follower,'blacklists':blacklists,'blacklisters':blacklisters, 'friend': friend, 'friends': friends, 'followings': followings}
     return render(request, 'blog/profile.html', args)
 
 
@@ -354,7 +442,7 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
 class CategoryUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Category
-    fields = ['name', 'photo', ]
+    fields = AlbumUpdateForm
 
     def get_form_kwargs(self):
         kwargs = super(CategoryUpdateView, self).get_form_kwargs()
@@ -384,9 +472,9 @@ class CategoryDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
             return True
         return False
 
+
 @login_required
 def add_reply_to_comment(request, pk):
-
     comment = get_object_or_404(Comment, pk=pk)
     post = comment.post
     posts = Post.objects.filter(author=post.author).exclude(id=post.id).order_by('-date_posted')
@@ -407,8 +495,8 @@ def add_reply_to_comment(request, pk):
     else:
         form = ReplyForm()
     context = {
-        'comment': comment,'posts':posts,'comments': comments,'form': form}
-    return render(request, 'blog/add_reply.html',context)
+        'comment': comment, 'posts': posts, 'comments': comments, 'form': form}
+    return render(request, 'blog/add_reply.html', context)
 
 
 @login_required
@@ -421,30 +509,35 @@ def comment_approve(request, pk):
 @login_required
 def comment_remove(request, pk):
     comment = get_object_or_404(Comment, pk=pk)
+    post = comment.post
     comment.delete()
+    post.hises.remove(comment.author)
     post = comment.post
     notify = Notification.objects.filter(post=post, sender=request.user, user=post.author, notification_type=2)
     notify.delete()
     return redirect('post_detail', pk=comment.post.pk)
 
 
+@login_required
 def ShowNOtifications(request):
     user = request.user
     notifications = Notification.objects.filter(user=user).order_by('-date')
     Notification.objects.filter(user=user, is_seen=False).update(is_seen=True)
     myposts = Post.objects.filter(author=request.user).order_by('-date_posted')
     context = {
-        'notifications': notifications,'myposts':myposts
+        'notifications': notifications, 'myposts': myposts
     }
     return render(request, 'blog/notifications.html', context)
 
 
+@login_required
 def DeleteNotification(request, noti_id):
     user = request.user
     Notification.objects.filter(id=noti_id, user=user).delete()
     return redirect('show-notifications')
 
 
+@login_required
 def CountNotifications(request):
     count_notifications = 0
     if request.user.is_authenticated:
@@ -458,6 +551,7 @@ def Inbox(request):
     messages = Message.get_messages(user=request.user)
     active_direct = None
     active_pic = None
+    active_user = None
     directs = None
 
     if messages:
@@ -474,7 +568,7 @@ def Inbox(request):
         'directs': directs,
         'messages': messages,
         'active_pic': active_pic,
-        'active_direct': active_direct,'active_user': active_user,
+        'active_direct': active_direct, 'active_user': active_user,
     }
     return render(request, 'blog/direct.html', context)
 
@@ -503,6 +597,7 @@ def UserSearch(request):
 def Directs(request, username):
     user = request.user
     active_pic = None
+    active_user = None
     users = None
 
     messages = Message.get_messages(user=user)
@@ -546,7 +641,6 @@ def SendDirect(request):
     from_user = request.user
     to_user_username = request.POST.get('to_user')
     body = request.POST.get('body')
-
     if request.method == 'POST':
         to_user = User.objects.get(username=to_user_username)
         Message.send_message(from_user, to_user, body)

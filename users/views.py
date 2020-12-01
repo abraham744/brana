@@ -2,6 +2,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.urls import reverse
 from django.views.generic import ListView
 
 from blog.models import Post, Notification, Category
@@ -14,7 +15,6 @@ def register(request):
         form = UserRegisterForm(request.POST)
         if form.is_valid():
             form.save()
-            username = form.cleaned_data.get('username')
             messages.success(request, f'Your account has been created! You are now able to log in')
             return redirect('login')
     else:
@@ -25,6 +25,7 @@ def register(request):
 @login_required
 def profile(request, username=None):
     if request.method == 'POST':
+        users= request.user.pk
         u_form = UserUpdateForm(request.POST, instance=request.user)
         p_form = ProfileUpdateForm(request.POST,
                                    request.FILES,
@@ -33,18 +34,14 @@ def profile(request, username=None):
             u_form.save()
             p_form.save()
             messages.success(request, f'Your account has been updated!')
-            return redirect('about_me')
-
+            return redirect('profile_me',users)
     else:
         u_form = UserUpdateForm(instance=request.user)
         p_form = ProfileUpdateForm(instance=request.user.profile)
-
-
     context = {
         'u_form': u_form,
         'p_form': p_form
     }
-
     return render(request, 'users/profile.html', context)
 
 
@@ -57,6 +54,15 @@ def view_profile(request, pk, username=None):
     return render(request, 'users/user_profile.html', args)
 
 @login_required
+def blacklist(request, pk):
+    if request.user.is_authenticated:
+        to_block = User.objects.get(pk=pk)
+        if Friend.objects.filter(blacklists=to_block).exists():
+            Friend.unblock(request.user, to_block)
+        else:
+            Friend.block(request.user, to_block)
+    return redirect('profile_me',to_block.pk)
+@login_required
 def change_friends(request, operation, pk):
     if request.user.is_authenticated:
         to_follow = User.objects.get(pk=pk)
@@ -68,4 +74,4 @@ def change_friends(request, operation, pk):
             Friend.unfollow(request.user, to_follow)
             notify = Notification.objects.filter( sender=request.user,user =to_follow, notification_type=3)
             notify.delete()
-        return redirect('/')
+        return redirect('profile_me',to_follow.pk)

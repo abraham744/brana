@@ -1,11 +1,7 @@
-{% extends "blog/base.html" %}
-{% load static %}
-{% block content %}
-{% for post in posts %}
- {% if forloop.first %}
+{% extends "blog/base.html" %} {% load static %} {% block content %} {% for post in posts %} {% if forloop.first %}
 <div class="single-channel-page" id="content-wrapper">
     <div class="single-channel-image">
-        <img  alt=""  width="100%" height="300" src="{{post.author.profile.cover_image.url}}">
+        <img class="img-fluid" alt="" src="{{post.author.profile.cover_image.url}}">
         <div class="channel-profile">
             <img class="channel-profile-img" alt="" src="{{post.author.profile.image.url}}">
             <div class="social hidden-xs">
@@ -23,41 +19,51 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                 <ul class="navbar-nav mr-auto">
-                            <li class="nav-item dropdown ">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item dropdown ">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                            Profile
                            </a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="#">View Profile</a>
-                                    <a class="dropdown-item" href="{% url 'profile' %}">Edit Profile</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#">Something else here</a>
-                                </div>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'profile_pk' post.author.pk %}">Posts</a>
-                            </li>
-                            <li class="nav-item  ">
-                                <a class="nav-link" href="{% url 'user-category' post.author.username %}">Gallery <span class="sr-only">(current)</span></a>
-                            </li>
+                          <div class="dropdown-menu " aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{% url 'profile_me' post.author.pk %}">View Profile</a>
+                                {% if  post.author.username == user.username %}
+                            <a class="dropdown-item" href="{% url 'profile' %}">Edit Profile</a>
+                              {% endif %}
+                            <div class="dropdown-divider"></div>
+                            {% if post.author in blacklists and post.author.username != user.username %}
+                            <a class="dropdown-item" href="{% url 'block_pk' post.author.pk%}">Unblock user</a>
+                            {% elif not post.author in blacklists %}
+                             <a class="dropdown-item" href="{% url 'block_pk' post.author.pk %}">Block user</a>
+                            {% endif %}
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'profile_pk' post.author.pk %}">Posts</a>
+                    </li>
+                    <li class="nav-item  ">
+                        <a class="nav-link" href="{% url 'user-category' post.author.username %}">Gallery <span class="sr-only">(current)</span></a>
+                    </li>
 
-                            <li class="nav-item ">
-                                <a class="nav-link active" href="{% url 'user-playlist' post.author.username %}">Playlist</a>
-                            </li>
+                    <li class="nav-item ">
+                        <a class="nav-link active" href="{% url 'user-playlist' post.author.username %}">Playlist</a>
+                    </li>
+                         {% if post.author.username == user.username %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'favorited-posts' post.author.username %}">Favorites</a>
+                    </li>{% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
 
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'favorited-posts' post.author.username %}">Favorites</a>
-                            </li>
-                             <li class="nav-item">
-                                <a class="nav-link" href="#">About</a>
-                            </li>
-
-                        </ul>
-                <form class="form-inline my-2 my-lg-0">
-                    <input class="form-control form-control-sm mr-sm-1" type="search" placeholder="Search" aria-label="Search"><button class="btn btn-outline-success btn-sm my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button> &nbsp;&nbsp;&nbsp;
-                    <button class="btn btn-outline-danger btn-sm" type="button">Subscribe <strong>1.4M</strong></button>
-                </form>
+                </ul>
+                 <form class="mobile-search">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search for..." name="q"  value="{{ request.GET.q }}">
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-primary" ><i class="fas fa-search"></i></button>
+                            </div>
+                        </div>
+                    </form>
             </div>
         </nav>
     </div>
@@ -78,15 +84,14 @@
                             </div>
                         </div>
                         <h6>Videos</h6>
-                    </div>  {% endif %}{% endfor %}
+                    </div> {% endif %}{% endfor %}
                 </div>
-                {% for post in posts %}
-                {% if post.video %}
+                {% for post in posts %} {% if post.video %}
                 <div class="col-xl-3 col-sm-6 mb-3">
                     <div class="video-card">
                         <div class="video-card-image">
                             <a class="play-icon" href="#"><i class="fas fa-play-circle"></i></a>
-                            <a href="{% url 'post_detail' post.id %}">  <video  width="100%" height="169" >
+                            <a href="{% url 'post_detail' post.id %}"> <video width="100%" height="169">
                                 <source src="{{post.video.url}}" type="video/mp4"> Your browser does not support the video tag.
                             </video></a>
                             <div class="time"> <time id="duration">00:00</time></div>
@@ -104,9 +109,8 @@
                         </div>
                     </div>
                 </div>
-                {% endif %}
-                {% endfor %}
-             </div>
+                {% endif %} {% endfor %}
+            </div>
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-center pagination-sm mb-0">
                     <li class="page-item disabled">
@@ -124,16 +128,13 @@
     </div>
     <!-- /.container-fluid -->
     <!-- Sticky Footer -->
-    <footer class="sticky-footer ml-0">
-        <div class="container">
+      <footer class="sticky-footer ml-0">
             <div class="row no-gutters">
-                <p class="mt-1 mb-0"><strong class="text-dark">Vidoe</strong>.
-                    <small class="mt-0 mb-0"><a target="_blank" href="https://www.templateshub.net">Templates Hub</a>
+                <p class="mt-1 mb-0"><strong class="text-dark">Branagram</strong>.
+                    <small class="mt-0 mb-0"><a target="_blank" href="#">Term and policy.</a>
                     </small>
                 </p>
-
             </div>
-        </div>
     </footer>
 </div>
 

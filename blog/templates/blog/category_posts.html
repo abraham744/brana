@@ -5,7 +5,7 @@
  {% if forloop.first %}
 <div class="single-channel-page" id="content-wrapper">
     <div class="single-channel-image">
-        <img  alt=""  width="100%" height="300" src="{{post.author.profile.cover_image.url}}">
+        <img  alt="" class="img-fluid" src="{{post.author.profile.cover_image.url}}">
         <div class="channel-profile">
             <img class="channel-profile-img" alt="" src="{{post.author.profile.image.url}}">
             <div class="social hidden-xs">
@@ -24,39 +24,50 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item dropdown">
+                    <li class="nav-item dropdown ">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Profile
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">View Profile</a>
+                           Profile
+                           </a>
+                          <div class="dropdown-menu " aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{% url 'profile_me' post.author.pk %}">View Profile</a>
+                                {% if  post.author.username == user.username %}
                             <a class="dropdown-item" href="{% url 'profile' %}">Edit Profile</a>
+                              {% endif %}
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Something else here</a>
+                            {% if post.author in blacklists and post.author.username != user.username %}
+                            <a class="dropdown-item" href="{% url 'block_pk' post.author.pk%}">Unblock user</a>
+                            {% elif not post.author in blacklists %}
+                             <a class="dropdown-item" href="{% url 'block_pk' post.author.pk %}">Block user</a>
+                            {% endif %}
                         </div>
                     </li>
-                     <li class="nav-item">
-                                <a class="nav-link" href="{% url 'profile_pk' post.author.pk %}">Posts</a>
-                            </li>
-                    <li class="nav-item ">
-                        <a class="nav-link" href="{% url 'user-category' post.author.username %}">Gallery <span class="sr-only">(current)</span></a>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'profile_pk' post.author.pk %}">Posts</a>
                     </li>
-                    <li class="nav-item ">
-                        <a class="nav-link" href="{% url 'user-playlist' post.author.username %}">Playlist</a>
+                    <li class="nav-item  ">
+                        <a class="nav-link active" href="{% url 'user-category' post.author.username %}">Gallery <span class="sr-only">(current)</span></a>
                     </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Favorites</a>
+                    <li class="nav-item ">
+                        <a class="nav-link " href="{% url 'user-playlist' post.author.username %}">Playlist</a>
                     </li>
+                         {% if post.author.username == user.username %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'favorited-posts' post.author.username %}">Favorites</a>
+                    </li>{% endif %}
                     <li class="nav-item">
                         <a class="nav-link" href="#">About</a>
                     </li>
 
                 </ul>
-                <form class="form-inline my-2 my-lg-0">
-                    <input class="form-control form-control-sm mr-sm-1" type="search" placeholder="Search" aria-label="Search"><button class="btn btn-outline-success btn-sm my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button> &nbsp;&nbsp;&nbsp;
-                    <button class="btn btn-outline-danger btn-sm" type="button">Subscribe <strong>1.4M</strong></button>
-                </form>
+                  <form class="mobile-search">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search for..." name="q"  value="{{ request.GET.q }}">
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-primary" ><i class="fas fa-search"></i></button>
+                            </div>
+                        </div>
+                    </form>
             </div>
         </nav>
     </div>
@@ -103,120 +114,23 @@
                 </div>
                 {% endif %}
                 {% endfor %}
-                <div class="col-sm-6 col-md-4 col-lg-4 col-xl-3 item" data-aos="fade" data-src="/static/images/big-images/nature_big_3.jpg" data-sub-html="<h4>Fading Light</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem reiciendis, dolorum illo temporibus culpa eaque dolore rerum quod voluptate doloribus.</p>">
-                    <a href="#"><img src="/static/images/nature_small_3.jpg" alt="IMage" class="img-fluid"></a>
-                    <div class="video-card-body">
-                        <div class="video-title">
-                            <a href="#">There are many variations of passages of Lorem</a>
-                        </div>
-                        <div class="video-page text-success">
-                            Education <a title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></a>
-                        </div>
-                        <div class="video-view">
-                            1.8M views &nbsp;<i class="fas fa-calendar-alt"></i> 11 Months ago
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-md-4 col-lg-4 col-xl-3 item" data-aos="fade" data-src="/static/images/big-images/nature_big_4.jpg" data-sub-html="<h4>Fading Light</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Enim perferendis quae iusto omnis praesentium labore tempore eligendi quo corporis sapiente.</p>">
-                    <a href="#"><img src="/static/images/nature_small_4.jpg" alt="IMage" class="img-fluid"></a>
-                    <div class="video-card-body">
-                        <div class="video-title">
-                            <a href="#">There are many variations of passages of Lorem</a>
-                        </div>
-                        <div class="video-page text-success">
-                            Education <a title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></a>
-                        </div>
-                        <div class="video-view">
-                            1.8M views &nbsp;<i class="fas fa-calendar-alt"></i> 11 Months ago
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-md-4 col-lg-4 col-xl-3 item" data-aos="fade" data-src="/static/images/big-images/nature_big_5.jpg" data-sub-html="<h4>Fading Light</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe, voluptatum voluptate tempore aliquam, dolorem distinctio. In quas maiores tenetur sequi.</p>">
-                    <a href="#"><img src="/static/images/nature_small_5.jpg" alt="IMage" class="img-fluid"></a>
-                    <div class="video-card-body">
-                        <div class="video-title">
-                            <a href="#">There are many variations of passages of Lorem</a>
-                        </div>
-                        <div class="video-page text-success">
-                            Education <a title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></a>
-                        </div>
-                        <div class="video-view">
-                            1.8M views &nbsp;<i class="fas fa-calendar-alt"></i> 11 Months ago
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-md-4 col-lg-4 col-xl-3 item" data-aos="fade" data-src="/static/images/big-images/nature_big_6.jpg" data-sub-html="<h4>Fading Light</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rerum cum culpa blanditiis illum, voluptatum iusto quisquam mollitia debitis quaerat maiores?</p>">
-                    <a href="#"><img src="/static/images/nature_small_6.jpg" alt="IMage" class="img-fluid"></a>
-                    <div class="video-card-body">
-                        <div class="video-title">
-                            <a href="#">There are many variations of passages of Lorem</a>
-                        </div>
-                        <div class="video-page text-success">
-                            Education <a title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></a>
-                        </div>
-                        <div class="video-view">
-                            1.8M views &nbsp;<i class="fas fa-calendar-alt"></i> 11 Months ago
-                        </div>
-                    </div>
-                </div>
 
-                <div class="col-sm-6 col-md-4 col-lg-4 col-xl-3 item" data-aos="fade" data-src="/static/images/big-images/nature_big_7.jpg" data-sub-html="<h4>Fading Light</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores similique impedit possimus, laboriosam enim at placeat nihil voluptatibus voluptate hic!</p>">
-                    <a href="#"><img src="/static/images/nature_small_7.jpg" alt="IMage" class="img-fluid"></a>
-                    <div class="video-card-body">
-                        <div class="video-title">
-                            <a href="#">There are many variations of passages of Lorem</a>
-                        </div>
-                        <div class="video-page text-success">
-                            Education <a title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></a>
-                        </div>
-                        <div class="video-view">
-                            1.8M views &nbsp;<i class="fas fa-calendar-alt"></i> 11 Months ago
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-md-4 col-lg-4 col-xl-3 item" data-aos="fade" data-src="/static/images/big-images/nature_big_8.jpg" data-sub-html="<h4>Fading Light</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam vitae sed cum mollitia itaque soluta laboriosam eaque sit ratione, aliquid.</p>">
-                    <a href="#"><img src="/static/images/nature_small_8.jpg" alt="IMage" class="img-fluid"></a>
-                    <div class="video-card-body">
-                        <div class="video-title">
-                            <a href="#">There are many variations of passages of Lorem</a>
-                        </div>
-                        <div class="video-page text-success">
-                            Education <a title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></a>
-                        </div>
-                        <div class="video-view">
-                            1.8M views &nbsp;<i class="fas fa-calendar-alt"></i> 11 Months ago
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-md-4 col-lg-4 col-xl-3 item" data-aos="fade" data-src="/static/images/big-images/nature_big_9.jpg" data-sub-html="<h4>Fading Light</h4><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem reiciendis debitis beatae facilis quos, enim quis nobis magnam architecto earum!</p>">
-                    <a href="#"><img src="/static/images/nature_small_9.jpg" alt="IMage" class="img-fluid"></a>
-                    <div class="video-card-body">
-                        <div class="video-title">
-                            <a href="video-page.html">There are many variations of passages of Lorem</a>
-                        </div>
-                        <div class="video-page text-success">
-                            Education <a title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></a>
-                        </div>
-                        <div class="video-view">
-                            1.8M views &nbsp;<i class="fas fa-calendar-alt"></i> 11 Months ago
-                        </div>
-                    </div>
-                </div>
 
             </div>
         </div>
     </div>
     <!-- /.container-fluid -->
     <!-- Sticky Footer -->
-    <footer class="sticky-footer ml-0">
-        <div class="container">
-            <div class="row no-gutters">
-                <p class="mt-1 mb-0"><strong class="text-dark">Vidoe</strong>.
-                    <small class="mt-0 mb-0"><a target="_blank" href="https://www.templateshub.net">Templates Hub</a>
-                    </small>
-                </p>
 
-            </div>
+    <!-- Sticky Footer -->
+    <footer class="sticky-footer ml-0">
+        <div class="row no-gutters">
+            <p class="mt-1 mb-0"><strong class="text-dark">Branagram</strong>.
+                <small class="mt-0 mb-0"><a target="_blank" href="#">Term and policy.</a>
+                </small>
+                <small class="mt-0 mb-0"><a target="_blank" href="#">Copyright 2020</a>
+                </small>
+            </p>
         </div>
     </footer>
 </div>

@@ -1,11 +1,19 @@
 from ckeditor.fields import RichTextField
 from django import forms
-from .models import Comment, Post, Category
+from .models import Comment, Post, Category, Message
 
 
+class MessageForm(forms.ModelForm):
+    class Meta:
+        model = Message
+        fields = [
+            "body",
+            "recipient",
+            "photo"
+        ]
 class VideoForm(forms.ModelForm):
-    category = forms.ModelChoiceField(queryset=Category.objects.all(),
-                                      widget=forms.Select(attrs={'class': 'form-control'}))
+    category = forms.ModelChoiceField(queryset=Category.objects.all(),widget=forms.Select(attrs={'class': 'form-control'}))
+    tags = forms.CharField(widget=forms.TextInput(attrs={'class': 'input is-medium'}), required=True)
 
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop("request")
@@ -14,12 +22,12 @@ class VideoForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        fields = ('title', 'category', 'content', 'photo', 'video')
+        fields = ('video','thumbnail','title','content','category')
 
 class PhotoForm(forms.ModelForm):
     category = forms.ModelChoiceField(queryset=Category.objects.all(),
                                       widget=forms.Select(attrs={'class': 'form-control'}))
-
+    tags = forms.CharField(widget=forms.TextInput(attrs={'class': 'input is-medium'}), required=True)
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop("request")
         super(PhotoForm, self).__init__(*args, **kwargs)
@@ -27,13 +35,12 @@ class PhotoForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        fields = ('title', 'category', 'content', 'photo')
+        fields = ('photo', 'title','content' , 'category', )
 
 
 class MemeForm(forms.ModelForm):
-    category = forms.ModelChoiceField(queryset=Category.objects.all(),
-                                      widget=forms.Select(attrs={'class': 'form-control'}))
-
+    category = forms.ModelChoiceField(queryset=Category.objects.all(), widget=forms.Select(attrs={'class': 'form-control'}))
+    tags = forms.CharField(widget=forms.TextInput(attrs={'class': 'input is-medium'}), required=True)
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop("request")
         super(MemeForm, self).__init__(*args, **kwargs)
@@ -41,12 +48,20 @@ class MemeForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        fields = ('title', 'category','meme_top','meme_bottom', 'content', 'photo')
+        fields = ('photo','meme_top','meme_bottom', 'title', 'category','content', )
+
+class AlbumUpdateForm(forms.ModelForm):
+    category = forms.ModelChoiceField(queryset=Category.objects.all(),
+                                      widget=forms.Select(attrs={'class': 'form-control'}))
+
+    class Meta:
+        model = Category
+        fields = ('name','photo')
 
 class UpdateForm(forms.ModelForm):
     category = forms.ModelChoiceField(queryset=Category.objects.all(),
                                       widget=forms.Select(attrs={'class': 'form-control'}))
-
+    tags = forms.CharField(widget=forms.TextInput(attrs={'class': 'input is-medium'}), required=True)
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop("request")
         super(UpdateForm,self).__init__(*args, **kwargs)
@@ -54,7 +69,7 @@ class UpdateForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        fields = ('title', 'category','content', 'photo', 'video')
+        fields = ( 'photo', 'video','title', 'category','content',)
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment

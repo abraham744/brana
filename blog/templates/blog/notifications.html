@@ -36,14 +36,40 @@
                             </div>
                             <div class="col-6">
                                 <b><a href="">{{ notification.sender.username }}</a></b> Commented on {{ notification.post.title }}
-                                {{ notification.text_preview }}
-                                <br>
+                                <br><b><i>{{ notification.text_preview }}></i></b><br>
                                 <small>{{ notification.date|naturaltime }}</small>
                             </div>
                             <div class="col-4 video-card-image">
-                                <a class="play-icon" href="#"><i class="fas fa-play-circle"></i></a>
+                                <a class="play-icon" href="#"><i class="fas fa-play-circle"></i></a>  {% if notification.post.photo %}
                                 <a href="#"><img class="img-fluid" src="{{notification.post.photo.url}}" height="80" width="100%" alt=""></a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div><br>
+                {% endif %}
+                {% if notification.notification_type == 4 %}
+                <div class="single-video-info-content box mb-3">
+                    <div style="float: right;">
+                        <a href="{% url 'delete-notification' notification.id %}"><i class="fas fa-times-circle"></i></a>
+                    </div>
+                    <div class="dropdown-item">
+                        <div class="row no-gutters">
 
+                            <div class="col-2 profile-img">
+                                {% if notification.sender.profile.image %}
+                                <img class="img-author" src="{{ notification.sender.profile.image.url }}" />{% else %}
+                                <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image"> {% endif %}
+                            </div>
+                            <div class="col-6">
+                                <b><a href="">{{ notification.sender.username }}</a></b> Replied your comment on {{ notification.post.title }}
+                                <br><b><i>{{ notification.text_preview }}></i></b><br>
+                                <small>{{ notification.date|naturaltime }}</small>
+                            </div>
+                            <div class="col-4 video-card-image">
+                                <a class="play-icon" href="#"><i class="fas fa-play-circle"></i></a>  {% if notification.post.photo %}
+                                <a href="#"><img class="img-fluid" src="{{notification.post.photo.url}}" height="80" width="100%" alt=""></a>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -68,11 +94,12 @@
                                 <small>{{ notification.date|naturaltime }}</small>
                             </div>
                             <div class="col-4 video-card-image">
-                                <a class="play-icon" href="#"><i class="fas fa-play-circle"></i></a>
-                                <a href="#"><img class="img-fluid" src="{{notification.sender.profile.image.url}}" alt=""></a>
-
+                               <a class="play-icon" href="#"><i class="fas fa-play-circle"></i></a>  {% if notification.post.photo %}
+                                <a href="#"><img class="img-fluid" src="{{notification.post.photo.url}}" height="80" width="100%" alt=""></a>
+                                {% endif %}
                             </div>
-                        </div></div>
+                        </div>
+                    </div>
                 </div><br>
                 {% endif %}
                 {% if notification.notification_type == 1 %}
@@ -93,9 +120,9 @@
                                 <small>{{ notification.date|naturaltime }}</small>
                             </div>
                             <div class="col-4 video-card-image">
-                                <a class="play-icon" href="#"><i class="fas fa-play-circle"></i></a>
-                                <a href="#"><img class="img-fluid" src="{{notification.post.photo.url}}"  height="163" width="100"  alt=""></a>
-                            </div>
+                                <a class="play-icon" href="#"><i class="fas fa-play-circle"></i></a>  {% if notification.post.photo %}
+                                <a href="#"><img class="img-fluid" src="{{notification.post.photo.url}}" height="80" width="100%" alt=""></a>
+                                {% endif %}  </div>
                         </div>
                     </div>
                 </div><br>

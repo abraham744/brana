@@ -5,91 +5,143 @@
 
 <div id="content-wrapper">
     <div class="container-fluid pb-0">
+        <div class="top-mobile-search">
+            <div class="row">
+                <div class="col-md-12">
+                    <form class="mobile-search">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search for..." name="q"  value="{{ request.GET.q }}">
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-primary" ><i class="fas fa-search"></i></button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
         <div class="video-block section-padding">
             <div class="row">
                 <div class="col-md-8">
                     {% for result in users %}
+                    {% if not result in blacklisters %}
                     <div class="single-video-author box mb-3">
                         <div style="float: right;" >
                             {% if user.is_authenticated %}
-                            <a href="{% url 'newconversation' result.username %}" class="btn btn btn-outline-primary" type="button"><i class="fas fa-envelope"></i></a>
+                            <a href="{% url 'newconversation' result.username %}" class="btn btn btn-primary" type="button"><i class="fas fa-envelope"></i></a>
                             {% if result.username != user.username %}
                             {% if not result in friends %}
-                            <a href="{% url 'change_friends' 'add' result.pk %}" class="btn btn btn-outline-primary" type="button"><i class="fas fa-user-plus"></i></a>
-                            {% endif %}{% endif %}
+                            <a href="{% url 'change_friends' 'add' result.pk %}" class="btn btn btn-primary" type="button"><i class="fas fa-user-plus"></i></a>
+                            {% endif %}
+                            {% endif %}
                             {% endif %}
                         </div>
                         <img class="img-author" src="{{ result.profile.image.url }}" alt="">
-                        <p><a href="{% url 'profile_me' result.pk %}"><strong>{{result.username}}</strong></a> <span title="" data-placement="top" data-toggle="tooltip" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></span></p>
-                        <small><b>{{result.email}}</b></small>
+                        <p><a href="{% url 'profile_me' result.pk %}"><strong>{{result.username}}</strong></a> <span title="" data-placement="top" data-toggle="tooltip" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></span>{% if  result in friends %}
+                            <small><strong><i>.following</i></strong></small>{% endif %}</p>
+                        <small> <i class="fas fa-users"></i>&nbsp; {{follower.count}} followers&nbsp;</small>
+                    </div>{% endif %}
+                    {% endfor %}
+                    {% for post in blogs %}
+                    {% if post.video %}
+                    <div class="video-card video-card-list">
+                        <div class="btn-group float-right right-action">
+                            <a href="#" class="right-action-link text-gray" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="#"><i class="fas fa-fw fa-star"></i> &nbsp; Top Rated</a>
+                                <a class="dropdown-item" href="#"><i class="fas fa-fw fa-signal"></i> &nbsp; Viewed</a>
+                                <a class="dropdown-item" href="#"><i class="fas fa-fw fa-times-circle"></i> &nbsp; Close</a>
+                            </div>
+                        </div>
+                        <div class="single-video-author box mb-3">
+                            <div  class="video-card-image">
+                            <a class="play-icon" href="{% url 'post_detail' post.id %}"><i class="fas fa-play-circle"></i></a>
+                             {% if post.thumbnail %}
+                                 <a href="{% url 'post_detail' post.id %}"><img src="{{post.thumbnail.url}}" width="100%" height="140"alt=""></a>
+                                {% else %}
+                            <a href="{% url 'post_detail' post.id %}">  <video  id="video"  >
+                                <source src="{{post.video.url}}" type="video/mp4"> Your browser does not support the video tag.
+                            </video></a>{% endif %}
+                            <div  class="time"> <time id="duration">00:00</time></div>
+                        </div>
+                            <div class="video-card-body">
+                                <div class="video-title">
+                                    <a href="{% url 'post_detail' post.id %}">{{post.title}}</a>
+                                </div>
+                                <div class="video-page text-success">
+                                    <p><a href="{% url 'profile_me' post.author.pk %}"><strong>{{post.author}}</strong></a> <span title="" data-placement="top" data-toggle="tooltip" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></span>{% if  post.author in friends %}
+                                        <small><strong><i>.following</i></strong></small>{% endif %}</p> </div>
+                                <div class="video-view">
+                                    <small>{{post.total_views}} views&nbsp;<i class="fas fa-thumb-up"></i>&nbsp;{{post.total_likes}} likes&nbsp;<i class="fas fa-calendar-alt"></i>&nbsp;{{ post.date_posted|naturaltime }}</small>
+                                </div>
+                            </div><br>
+                        </div>
                     </div>
+                    {% elif post.photo %}
+                    <div class="video-card video-card-list">
+                        <div class="single-video-author box mb-3">
+                            <div class="video-card-image">
+                                <a class="play-icon" href="{% url 'post_detail' post.id %}"><i class="fas fa-image"></i></a>
+                                <a href="{% url 'post_detail' post.id %}"><img class="img-fluid" src="{{post.photo.url}}" alt=""></a>
+                            </div>
+                            <div class="video-card-body">
+                                <div class="btn-group float-right right-action">
+                                    <a href="#" class="right-action-link text-gray" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="#"><i class="fas fa-fw fa-star"></i> &nbsp; Top Rated</a>
+                                        <a class="dropdown-item" href="#"><i class="fas fa-fw fa-signal"></i> &nbsp; Viewed</a>
+                                        <a class="dropdown-item" href="#"><i class="fas fa-fw fa-times-circle"></i> &nbsp; Close</a>
+                                    </div>
+                                </div>
+                                <div class="video-title">
+                                    <a href="{% url 'post_detail' post.id %}">{{post.title}}</a>
+                                </div>
+                                <div class="video-page text-success">
+                                    {{post.category}}<a title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></a>
+                                </div>
+                                <div class="video-view">
+                                    {{post.total_likes}} likes&nbsp;<i class="fas fa-calendar-alt"></i> {{ post.date_posted|naturaltime }}
+                                </div>
+                            </div><br>
+                        </div></div>
+                    {% endif %}
+
                     {% endfor %}
                     <div class="owl-carousel owl-carousel-category2">
+                        <div class="item">{% if user.is_authenticated %}
+                            <div class="category-item">
+                                <a href="{% url 'profile_me'  user.pk%}">
+                                    <div class="d-flex justify-content-center h-100">
+                                        <div class="image_outer_container">
+                                            <div class="image_inner_container">
+                                                <img src="{{user.profile.image.url}}" >
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <h6>{{user.username}}</h6>
+                                    <small><b>{{friend.count}} followers</b></small></a>
+                            </div> {% endif %}
+                        </div>
                         {% for friend in friends %}
                         <div class="item">
                             <div class="category-item">
-                                <a href="{% url 'profile_pk'  friend.pk%}">
-                                    <img  src="{{ friend.profile.image.url }}" height=92 width=99 alt="">
+                                <a href="{% url 'profile_me'  friend.pk%}">
+                                    <div class="d-flex justify-content-center h-100">
+                                        <div class="image_outer_container">
+                                            <div class="image_inner_container">
+                                                <img height="5" width="50%" src="{{friend.profile.image.url}}" >
+                                            </div>
+                                        </div>
+                                    </div>
                                     <h6>{{friend.username}}</h6>
-                                    <p>74,853 view</p>
+                                    <small><b>{{friend.email}}</b></small>
                                 </a>
                             </div>
                         </div>
                         {% endfor %}
-                        <div class="item">
-                            <div class="category-item">
-                                <a href="#">
-                                    <img class="img-fluid" src="/static/img/s3.png" alt="">
-                                    <h6>Service Reviewing</h6>
-                                    <p>74,853 views</p>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="category-item">
-                                <a href="#">
-                                    <img class="img-fluid" src="/static/img/s4.png" alt="">
-                                    <h6>Gaming <span title="" data-placement="top" data-toggle="tooltip" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></span></h6>
-                                    <p>74,853 views</p>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="category-item">
-                                <a href="#">
-                                    <img class="img-fluid" src="/static/img/s5.png" alt="">
-                                    <h6>Technology Tutorials</h6>
-                                    <p>74,853 views</p>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="category-item">
-                                <a href="#">
-                                    <img class="img-fluid" src="/static/img/s6.png" alt="">
-                                    <h6>Singing</h6>
-                                    <p>74,853 views</p>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="category-item">
-                                <a href="#">
-                                    <img class="img-fluid" src="/static/img/s7.png" alt="">
-                                    <h6>Cooking</h6>
-                                    <p>74,853 views</p>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="category-item">
-                                <a href="#">
-                                    <img class="img-fluid" src="/static/img/s8.png" alt="">
-                                    <h6>Traveling</h6>
-                                    <p>74,853 views</p>
-                                </a>
-                            </div>
-                        </div>
                     </div>
                     <hr>
                     {% if posts %}
@@ -98,8 +150,7 @@
                         <div class="single-video-author box mb-3">
                             <img class="img-author" src="{{ post.author.profile.image.url }}" alt="">
                             <p><a href="{% url 'profile_me' post.author.pk %}"><strong>{{ post.author }}</strong></a> <span title="" data-placement="top" data-toggle="tooltip" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></span></p>
-                            <small>Published on {{ post.date_posted|date:"F d, Y" }}</small>
-                            <br>
+                            <small>Published on {{ post.date_posted|date:"F d, Y" }}</small><br>
                             {% if post.video %}
                             <br>
                             <div class="video-container" id="video-container">
@@ -110,11 +161,11 @@
                                     </svg>
                                 </div>
                                 {% if post.photo %}
-                                <video controls class="video" id="video" preload="metadata"  poster="{{post.photo.url}}">
+                                <video controls class="video" id="video" preload="metadata"  poster="{{post.thumbnail.url}}">
                                     <source src="{{post.video.url}}" type="video/mp4">
                                 </video>
                                 {% else %}
-                                <video controls class="video" id="video" preload="metadata" >
+                                <video controls class="video" id="yvideo" preload="metadata" >
                                     <source src="{{post.video.url}}" type="video/mp4">
                                 </video>
                                 {% endif %}
@@ -154,12 +205,18 @@
                                         </div>
 
                                         <div class="right-controls">
-                                            <button data-title="PIP (p)" class="pip-button" id="pip-button">
+                                            <button data-title="PIP" class="pip-button" id="pip-button">
                                                 <svg>
                                                     <use href="#pip"></use>
                                                 </svg>
                                             </button>
-                                            <button data-title="Full screen (f)" class="fullscreen-button" id="fullscreen-button">
+                                            <button data-title="Wide screen" class="fullscreen-button" id="sidebarToggle">
+                                                <svg>
+                                                    <use href="#fullscreen-exit"></use>
+                                                    <use href="#fullscreen"></use>
+                                                </svg>
+                                            </button>
+                                             <button data-title="Full screen" class="fullscreen-button" id="fullscreen-button">
                                                 <svg>
                                                     <use href="#fullscreen"></use>
                                                     <use href="#fullscreen-exit" class="hidden"></use>
@@ -205,29 +262,31 @@
                                 </defs>
                             </svg>
                             {% else %}<br>
-                            <img width="100%" height="100%" src="{{post.photo.url}}">
+                            <a href="{% url 'post_detail' post.id %}"><img width="100%" height="100%" src="{{post.photo.url}}"></a> <br>
                             {% endif%}
 
                             <br>
-                            <a href="{% url 'post_detail' post.id %}">  <h6>{{ post.title }}</h6> <b>...see detail <i  class="fas fa-caret-right "></i></b></a>
+                            <a href="{% url 'post_detail' post.id %}">  <h6>{{ post.title }} ...<small>see more</small></h6></a>
+
                             <div class="row">
                                 <!-- Note that for bootstrap all the rows are always 12 columns -->
                                 <div class="col-4">
-                                    <i style="font-size: 14px; color: rgb(20, 220, 120);"  class="fas fa-eye "></i> 1k views &emsp;
+                                    <i style="font-size: 12px; color: rgb(0, 255, 255);"  class="fas fa-eye "></i> {{post.total_views}} views &emsp;
+                                </div>
+                                <div class="col-4">
+                                    <a href="{% url 'post_detail' post.id %}" ><i style="color: rgb(255, 255, 0);font-size: 12px; " class="fa fa-comments " aria-hidden="true "></i></a> {{post.total_comments}} Comments
                                 </div>
                                 <div class="col-4">
                                     <form action="{% url 'like_post' post.pk %}" method="POST">{% csrf_token %}{% if user.is_authenticated %}
                                         {% if liked %}
-                                        <button type='submit' name='post_id' value="{{post.id}}"><i style="font-size: 15px; color: rgb(252, 248, 1);" class="fa fa-thumbs-up " aria-hidden="true "></i></button>
+                                        <button type='submit' name='post_id' value="{{post.id}}"><i style="font-size: 12px; color: rgb(255, 0, 0);" class="fa fa-heart " aria-hidden="true "></i></button>
                                         {% else %}
-                                        <button type='submit' name='post_id' value="{{post.id}}"><i style="font-size: 15px; color: rgb(252, 248, 1);"  class="fa fa-thumbs-up " aria-hidden="true "></i></button>{% endif  %}
+                                        <button type='submit' name='post_id' value="{{post.id}}"><i style="font-size: 12px; color: rgb(255, 0, 0);"  class="fa fa-heart " aria-hidden="true "></i></button>{% endif  %}
                                         {% else %}
                                         <a href="{% url 'login' %}"><i  class="fa fa-thumbs-up " aria-hidden="true "></i></a>{% endif  %}
                                         {{post.total_likes}} likes &emsp;  </form>
                                 </div>
-                                <div class="col-4">
-                                    <a href="{% url 'post_detail' post.id %}" ><i style="color: crimson;font-size: 15px; " class="fa fa-comments " aria-hidden="true "></i></a> Comment
-                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -235,12 +294,12 @@
                     {% else %}
                     <div class="single-video-left">
                         <div class="single-video-author box mb-3">
-                             <br>
+                            <br>
                             <div class="text-center">
                                 <img  class="img-fluid" alt="" src="{% static 'images/icon.png' %}" height="170" width="160">
                                 <h5 class="mt-3 mb-3">Welcome to Banagram, {{user.username}}</h5>
                             </div>
-                             <br>
+                            <br>
                         </div>
                     </div>
 
@@ -275,20 +334,19 @@
                             <div class="col-md-12">
 
                                 <div class="channels-card">
-                                      <div class="d-flex justify-content-center h-100">
-                                            <div class="image_outer_container">
-                                                <div class="image_inner_container">
-                                                    <img height="50%" width="50%" src="{{user.profile.image.url}}" >
-
-                                                </div>
+                                    <div class="d-flex justify-content-center h-100">
+                                        <div class="image_outer_container">
+                                            <div class="image_inner_container">
+                                                <img height="5" width="50%" src="{{user.profile.image.url}}" >
                                             </div>
                                         </div>
+                                    </div>
 
                                     <div class="channels-card-body">
                                         <div class="channels-title">
-                                            <a href="{% url 'profile_pk' user.pk%}">{{ user.username }}<span title="" data-placement="top" data-toggle="tooltip" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></span></a>
+                                            <a href="{% url 'profile_me' user.pk%}">{{ user.username }}<span title="" data-placement="top" data-toggle="tooltip" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></span></a>
 
-                                        </div>  <i>{{user.email}}</i><br>
+                                        </div>  <i><b>{{user.profile.bio}}</b></i><br>
                                         <div class="channels-view">
 
                                             <div class="row">
@@ -335,12 +393,15 @@
                                 {% for post in myposts %}
                                 {% if post.video %}
                                 <div class="video-card video-card-list">
-                                    <div class="video-card-image">
+                                    <div  class="video-card-image">
                                         <a class="play-icon" href="{% url 'post_detail' post.id %}"><i class="fas fa-play-circle"></i></a>
-                                        <a href="{% url 'post_detail' post.id %}"> {% if post.photo %}
-
-                                            <img class="img-fluid" src="{{post.photo.url}}" alt="">   {% endif %}</a>
-                                        <div class="time">3:50</div>
+                                        {% if post.thumbnail %}
+                                        <a href="{% url 'post_detail' post.id %}"><img src="{{post.thumbnail.url}}" width="100%" height="140"alt=""></a>
+                                        {% else %}
+                                        <a href="{% url 'post_detail' post.id %}">  <video  id="video"  >
+                                            <source src="{{post.video.url}}" type="video/mp4"> Your browser does not support the video tag.
+                                        </video></a>{% endif %}
+                                        <div  class="time"> <time id="duration">MKV</time></div>
                                     </div>
                                     <div class="video-card-body">
                                         <div class="btn-group float-right right-action">
@@ -397,12 +458,14 @@
                                 {% else %}
                                 <div class="video-card-body">
                                     <div class="row">
+
                                         <div class="col-md-8 mx-auto text-center upload-video pt-5 pb-5">
-                                            <p><strong>No post yet.</strong></p>
+
                                             <div class="mt-4">
-                                                <a class="btn btn-outline-primary btn-block btn-lg" href="{% url 'upload'%}">Get Started Now</a>
+                                                <a class="btn btn-outline-primary btn-block btn-lg" href="{% url 'album-create'%}">Get Started Now</a>
                                             </div>
                                         </div>
+
                                     </div>
                                 </div>
                                 {% endif %}
@@ -425,5 +488,7 @@
         </p>
     </footer>
 </div>
-
+<script>
+    const duration = document.getElementById('time');
+</script>
 {% endblock content %}

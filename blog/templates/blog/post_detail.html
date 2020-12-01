@@ -25,7 +25,7 @@
                                     </svg>
                                 </div>
                                 {% if post.photo %}
-                                <video controls class="video" id="video" preload="metadata"  poster="{{post.photo.url}}">
+                                <video controls class="video" id="video" preload="metadata"  poster="{{post.thumbnail.url}}">
                                     <source src="{{post.video.url}}" type="video/mp4">
                                 </video>
                                 {% else %}
@@ -69,12 +69,18 @@
                                         </div>
 
                                         <div class="right-controls">
-                                            <button data-title="PIP (p)" class="pip-button" id="pip-button">
+                                            <button data-title="PIP" class="pip-button" id="pip-button">
                                                 <svg>
                                                     <use href="#pip"></use>
                                                 </svg>
                                             </button>
-                                            <button data-title="Full screen (f)" class="fullscreen-button" id="fullscreen-button">
+                                            <button data-title="Wide screen" class="fullscreen-button" id="sidebarToggle">
+                                                <svg>
+                                                    <use href="#fullscreen-exit"></use>
+                                                    <use href="#fullscreen"></use>
+                                                </svg>
+                                            </button>
+                                             <button data-title="Full screen" class="fullscreen-button" id="fullscreen-button">
                                                 <svg>
                                                     <use href="#fullscreen"></use>
                                                     <use href="#fullscreen-exit" class="hidden"></use>
@@ -120,7 +126,12 @@
                                 </defs>
                             </svg>
                             {% else %}<br>
+                             <div class="row" id="lightgallery">
+                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12" data-aos="fade" data-src="{{post.photo.url}}" data-sub-html="<h4>{{post.title}}</h4><p>{{post.content}}</p>">
+
                             <img width="100%" height="100%" src="{{post.photo.url}}">
+                                    </div></div>
+                            <br>
                             {% endif%}
 
                             <br>
@@ -130,9 +141,29 @@
                                     <a href="#" class="right-action-link text-gray" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <i class="fa fa-ellipsis-v" aria-hidden="true"></i> </a>
                                     <div class="dropdown-menu dropdown-menu-right">
+                                        {% if favorited is True %}
+                                        <a href="{% url 'postfavorite' post.id %}" class="dropdown-item" ><i  class="fa fa-heart " aria-hidden="true "></i>&nbsp; Favorited </a>
+                                        {% else %}
+                                        <a href="{% url 'postfavorite' post.id %}" class="dropdown-item "><i  class="fa fa-heart " aria-hidden="true "></i>&nbsp; Favorite</a>
+                                        {% endif %}
                                         <a class="dropdown-item" href="#"><i class="fas fa-fw fa-share"></i> &nbsp;Share post</a>
                                         <a class="dropdown-item" href="{% url 'post-update' object.id %}"><i class="fas fa-fw fa-sync"></i> &nbsp; update post</a>
                                         <a class="dropdown-item" href="#" data-toggle="modal" data-target="#deleteModal"><i class="fas fa-fw fa-times-circle"></i> &nbsp; Delete Post</a>
+                                        <a class="dropdown-item" href="#"><i class="fas fa-fw fa-times"></i> &nbsp; Close</a>
+                                    </div>
+                                </div>
+                                {% else %}
+                                <div  style="float: right;">
+                                    <a href="#" class="right-action-link text-gray" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-ellipsis-v" aria-hidden="true"></i> </a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        {% if favorited is True %}
+                                        <a href="{% url 'postfavorite' post.id %}" class="dropdown-item" ><i  class="fa fa-heart " aria-hidden="true "></i>&nbsp; Favorited </a>
+                                        {% else %}
+                                        <a href="{% url 'postfavorite' post.id %}" class="dropdown-item "><i  class="fa fa-heart " aria-hidden="true "></i>&nbsp; Favorite</a>
+                                        {% endif %}
+
+                                        <a class="dropdown-item" href="#"><i class="fas fa-fw fa-share"></i> &nbsp;Share post</a>
                                         <a class="dropdown-item" href="#"><i class="fas fa-fw fa-times"></i> &nbsp; Close</a>
                                     </div>
                                 </div>
@@ -146,23 +177,20 @@
                             <div class="row">
                                 <!-- Note that for bootstrap all the rows are always 12 columns -->
                                 <div class="col-4">
-                                    <i style="font-size: 20px; color: rgb(20, 220, 120);"  class="fas fa-eye "></i> 2,729 views &emsp;
+                                    <i style="font-size: 12px; color: rgb(0, 255, 255);"  class="fas fa-eye "></i> {{post.total_views}} views &emsp;
+                                </div>
+                                <div class="col-4">
+                                    <a href="{% url 'post_detail' post.id %}" ><i style="color: rgb(255, 255, 0);font-size: 12px; " class="fa fa-comments " aria-hidden="true "></i></a> {{post.total_comments}} Comments
                                 </div>
                                 <div class="col-4">
                                     <form action="{% url 'like_post' post.pk %}" method="POST">{% csrf_token %}{% if user.is_authenticated %}
                                         {% if liked %}
-                                        <button type='submit' name='post_id' value="{{post.id}}"><i style="font-size: 20px; color: rgb(252, 248, 1);" class="fa fa-thumbs-up " aria-hidden="true "></i></button>
+                                        <button type='submit' name='post_id' value="{{post.id}}"><i style="font-size: 12px; color: rgb(255, 0, 0);" class="fa fa-heart " aria-hidden="true "></i></button>
                                         {% else %}
-                                        <button type='submit' name='post_id' value="{{post.id}}"><i style="font-size: 20px; color: rgb(252, 248, 1);"  class="fa fa-thumbs-up " aria-hidden="true "></i></button>{% endif  %}
+                                        <button type='submit' name='post_id' value="{{post.id}}"><i style="font-size: 12px; color: rgb(255, 0, 0);"  class="fa fa-heart " aria-hidden="true "></i></button>{% endif  %}
                                         {% else %}
                                         <a href="{% url 'login' %}"><i  class="fa fa-thumbs-up " aria-hidden="true "></i></a>{% endif  %}
-                                        {{total_likes}} likes &emsp;  </form>
-                                </div>
-                                <div class="col-4">
-                                    {% if favorited is True %}
-                                    <a href="{% url 'postfavorite' post.id %}" ><i style="color: crimson;font-size: 20px; " class="fa fa-heart " aria-hidden="true "></i></a> Favorited &emsp;
-                                    {% else %}
-                                    <a href="{% url 'postfavorite' post.id %}" ><i  style="color: crimson;font-size: 20px; "class="fa fa-heart " aria-hidden="true "></i></a> Favorite &emsp;{% endif %}
+                                        {{post.total_likes}} likes &emsp;  </form>
                                 </div>
                             </div>
                         </div>
@@ -186,67 +214,75 @@
                                     </div>
                                 </div>
                             </form>
-                                {% for comment in post.comments.all %}
-                                {% if not comment.parent %}
-                                {% if user.is_authenticated or comment.approved_comment  %}
-                                <div class="media g-mb-30 media-comment ">
-                                    <img class="img-author " src="{{comment.author.profile.image.url}} " alt="Image Description ">
-                                    <div class="media-body u-shadow-v18 g-bg-secondary g-pa-30 ">
-                                        {% if comment.author == user %}
-                                        <div style="float: right;">
-                                            <a href="#" class="right-action-link text-gray" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <i class="fa fa-ellipsis-v " aria-hidden="true"></i> </a>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                {% if not comment.approved_comment %}
-                                                <a class="dropdown-item" href="{% url 'comment_approve' pk=comment.pk %}"><i class="fas fa-fw fa-check-circle"></i> &nbsp; Approve It</a>
-                                                <a class="dropdown-item" href="{% url 'comment_remove' pk=comment.pk %}"><i class="fas fa-fw fa-times-circle"></i> &nbsp; Delete Comment.</a>
-                                                <a class="dropdown-item" href="#"><i class="fas fa-fw fa-times"></i> &nbsp; Close</a>
-                                                {% else %}
-                                                <a class="dropdown-item" href="{% url 'comment_remove' pk=comment.pk %}"><i class="fas fa-fw fa-times-circle"></i> &nbsp; Delete Comment.</a>
-                                                {% endif %}
-                                            </div>
+                            {% for comment in post.comments.all %}
+                            <br>
+                            {% if not comment.parent %}
+                            {% if user.is_authenticated or comment.approved_comment  %}
+                            <div class="media g-mb-30 media-comment ">
+                                <img class="img-author " src="{{comment.author.profile.image.url}} " alt="Image Description ">
+                                <div style="padding-bottom:0px;" class="media-body  u-shadow-v18 g-bg-secondary g-pa-30 ">
+                                    {% if comment.author == user %}
+                                    <div style="float: right;">
+                                        <a href="#" class="right-action-link text-gray" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fa fa-ellipsis-v " aria-hidden="true"></i> </a>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            {% if not comment.approved_comment %}
+                                            <a class="dropdown-item" href="{% url 'comment_approve' pk=comment.pk %}"><i class="fas fa-fw fa-check-circle"></i> &nbsp; Approve It</a>
+                                            <a class="dropdown-item" href="{% url 'comment_remove' pk=comment.pk %}"><i class="fas fa-fw fa-times-circle"></i> &nbsp; Delete Comment.</a>
+                                            <a class="dropdown-item" href="#"><i class="fas fa-fw fa-times"></i> &nbsp; Close</a>
+                                            {% else %}
+                                            <a class="dropdown-item" href="{% url 'comment_remove' pk=comment.pk %}"><i class="fas fa-fw fa-times-circle"></i> &nbsp; Delete Comment.</a>
+                                            {% endif %}
                                         </div>
-                                        {%else%}
-                                        <div class="btn-group float-right right-action">
-                                            <a href="#" class="right-action-link text-gray" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <i class="fa fa-caret-down" aria-hidden="true"></i> </a>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <a class="dropdown-item" href="{% url 'add_reply' pk=comment.pk %}"><i class="fas fa-fw fa-comment"></i>Reply</a>
-                                            </div>
-                                        </div>
-                                        {%endif%}
-                                        <div>
-                                            <p><a href="#"><strong>{{ comment.author }}</strong></a> <span title="" data-placement="top" data-toggle="tooltip" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i>&emsp;</span><small>  {{ comment.created_date }}</small></p>
-
-                                        </div>
-
-                                        <i>{{comment.text|linebreaks }}</i><br>
-
-                                        <ul class="list-inline d-sm-flex my-0 ">
-                                            <li class="list-inline-item g-mr-20 ">
-                                                <a class="u-link-v5 g-color-gray-dark-v4 g-color-primary--hover " href="#! "><small>
-                                                    <i class="fa fa-thumbs-up g-pos-rel g-top-1 g-mr-3 "></i>
-                                                    178&emsp;</small>
-                                                </a>
-                                            </li>
-                                            <li class="list-inline-item g-mr-20 ">
-                                                <a class="u-link-v5 g-color-gray-dark-v4 g-color-primary--hover " href="#! "><small>
-                                                    <i class="fa fa-thumbs-down g-pos-rel g-top-1 g-mr-3 "></i>
-                                                    34 &emsp;</small>
-                                                </a>
-                                            </li>
-                                            <li class="list-inline-item ml-auto ">
-                                                <a class="u-link-v5 g-color-gray-dark-v4 g-color-primary--hover " href="{% url 'add_reply' pk=comment.pk %}"><small>
-                                                    <i class="fa fa-reply g-pos-rel g-top-1 g-mr-3 "></i>
-                                                    Reply</small>
-                                                </a>
-                                            </li>
-                                        </ul>
                                     </div>
+                                    {%else%}
+                                    <div class="btn-group float-right right-action">
+                                        <a href="#" class="right-action-link text-gray" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fa fa-caret-down" aria-hidden="true"></i> </a>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <a class="dropdown-item" href="{% url 'add_reply' pk=comment.pk %}"><i class="fas fa-fw fa-comment"></i>Reply</a>
+                                        </div>
+                                    </div>
+                                    {%endif%}
+                                    <div>
+                                        <p><a href="#"><strong>{{ comment.author }}</strong></a> <span title="" data-placement="top" data-toggle="tooltip" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i>&emsp;</span><small>  {{ comment.created_date }}</small></p>
+
+                                    </div>
+
+                                    <i>{{comment.text|linebreaks }}</i><br>
+
+                                    <ul class="list-inline d-sm-flex my-0 ">
+                                        <li class="list-inline-item g-mr-20 ">
+                                            <small>
+                                                <form action="{% url 'like_comment' comment.pk %}" method="POST">{% csrf_token %}{% if user.is_authenticated %}
+                                                    <button type='submit' name='comment_id' value="{{comment.id}}"><i class="fa fa-thumbs-up g-pos-rel g-top-1 g-mr-3 "></i></button>
+                                                    {% else %}
+                                                    <a href="{% url 'login' %}"><i class="fa fa-thumbs-up g-pos-rel g-top-1 g-mr-3 "></i></a>{% endif  %}
+                                                    {{comment.total_likes}} &emsp;  </form>
+                                                &emsp;</small>
+                                        </li>
+                                        <li class="list-inline-item g-mr-20 ">
+                                            <small>
+                                                <form action="{% url 'dislike_comment' comment.pk %}" method="POST">{% csrf_token %}{% if user.is_authenticated %}
+
+                                                    <button type='submit' name='comment_id' value="{{comment.id}}"><i class="fa fa-thumbs-down g-pos-rel g-top-1 g-mr-3 "></i></button>
+                                                    {% else %}
+                                                    <a href="{% url 'login' %}"><i class="fa fa-thumbs-up g-pos-rel g-top-1 g-mr-3 "></i></a>{% endif  %}
+                                                    {{comment.total_dislikes}} &emsp;  </form>
+                                                &emsp;</small>
+                                        </li>
+                                        <li class="list-inline-item ml-auto ">
+                                            <a class="u-link-v5 g-color-gray-dark-v4 g-color-primary--hover " href="{% url 'add_reply' pk=comment.pk %}"><small>
+                                                <i class="fa fa-reply g-pos-rel g-top-1 g-mr-3 "></i>
+                                                Reply</small>
+                                            </a>
+                                        </li>
+                                    </ul>
                                 </div>
-                                {% endif %}{% endif %}
-                                {% empty %}<p>No comments here yet :-)</p>
-                                {% endfor %}
+                            </div>
+                            {% endif %}{% endif %}
+                            {% empty %}<p>No comments here yet :-)</p>
+                            {% endfor %}
 
                         </div>
                     </div>
@@ -280,8 +316,13 @@
                                 <div class="video-card video-card-list">
                                     <div class="video-card-image">
                                         <a class="play-icon" href="{% url 'post_detail' post.id %}"><i class="fas fa-play-circle"></i></a>
-                                        <a href="{% url 'post_detail' post.id %}"><img class="img-fluid" src="{{post.photo.url}}" alt=""></a>
-                                        <div class="time">3:50</div>
+                                        {% if post.thumbnail %}
+                                        <a href="{% url 'post_detail' post.id %}"><img src="{{post.thumbnail.url}}" width="100%" height="140"alt=""></a>
+                                        {% else %}
+                                        <a href="{% url 'post_detail' post.id %}">  <video  id="video"  >
+                                            <source src="{{post.video.url}}" type="video/mp4"> Your browser does not support the video tag.
+                                        </video></a>{% endif %}
+                                        <div  class="time"> <time id="duration">MKV</time></div>
                                     </div>
                                     <div class="video-card-body">
                                         <div class="btn-group float-right right-action">
@@ -343,23 +384,23 @@
         </div>
     </div>
     <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Are you sure to delete?</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body">Select "Delete" below if you are ready to end your current session.</div>
-            <div class="modal-footer">
+        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Are you sure to delete?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Select "Delete" below if you are ready to end your current session.</div>
+                <div class="modal-footer">
 
-                <a class="btn btn-secondary"  data-dismiss="modal">Cancel</a>
-                <a class="btn btn-danger" href="{% url 'post-delete' object.id %}">Delete</a>
+                    <a class="btn btn-secondary"  data-dismiss="modal">Cancel</a>
+                    <a class="btn btn-danger" href="{% url 'post-delete' object.id %}">Delete</a>
+                </div>
             </div>
         </div>
     </div>
-</div>
     <!-- /.container-fluid -->
     <!-- Sticky Footer -->
     <footer class="sticky-footer">

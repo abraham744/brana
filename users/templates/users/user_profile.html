@@ -1,10 +1,7 @@
-
-{% extends "blog/base.html" %}
-{% load static %}
-{% block content %}
+ {% extends "blog/base.html" %} {% load static %} {% block content %}
 <div class="single-channel-page" id="content-wrapper">
     <div class="single-channel-image">
-        <img  alt=""  width="100%" height="300" src="{{users.profile.cover_image.url}}">
+        <img class="img-fluid" alt="" src="{{users.profile.cover_image.url}}">
         <div class="channel-profile">
             <img class="channel-profile-img" alt="" src="{{users.profile.image.url}}">
             <div class="social hidden-xs">
@@ -22,20 +19,26 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
+                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item dropdown ">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Profile
                         </a>
                         <div class="dropdown-menu " aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">View Profile</a>
+                            <a class="dropdown-item" href="{% url 'profile_me' users.pk %}">View Profile</a>
+                              {% if  users.username == user.username %}
                             <a class="dropdown-item" href="{% url 'profile' %}">Edit Profile</a>
+                              {% endif %}
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Something else here</a>
+                            {% if users in blacklists and users.username != user.username %}
+                            <a class="dropdown-item" href="{% url 'block_pk' users.pk %}">Unblock user</a>
+                            {% elif not users in blacklists %}
+                             <a class="dropdown-item" href="{% url 'block_pk' users.pk %}">Block user</a>
+                            {% endif %}
                         </div>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'profile_pk' users.pk %}">Posts</a>
+                    <li class="nav-item active">
+                        <a class="nav-link active" href="{% url 'profile_pk' users.pk %}">Posts</a>
                     </li>
                     <li class="nav-item  ">
                         <a class="nav-link" href="{% url 'user-category' users.username %}">Gallery <span class="sr-only">(current)</span></a>
@@ -44,17 +47,35 @@
                     <li class="nav-item ">
                         <a class="nav-link" href="{% url 'user-playlist' users.username %}">Playlist</a>
                     </li>
+                    {% if users.username == user.username %}
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Favorites</a>
-                    </li>
+                        <a class="nav-link" href="{% url 'favorited-posts' users.username %}">Favorites</a>
+                    </li>{% endif %}
                     <li class="nav-item">
                         <a class="nav-link" href="#">About</a>
                     </li>
 
                 </ul>
+                <form class="mobile-search">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search for..." name="q"  value="{{ request.GET.q }}">
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-primary" ><i class="fas fa-search"></i></button>
+                            </div>
+                        </div>
+                    </form>
                 <form class="form-inline my-2 my-lg-0">
-                    <input class="form-control form-control-sm mr-sm-1" type="search" placeholder="Search" aria-label="Search"><button class="btn btn-outline-success btn-sm my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button> &nbsp;&nbsp;&nbsp;
-                    <button class="btn btn-outline-danger btn-sm" type="button">Subscribe <strong>1.4M</strong></button>
+                     <div style="float: right;" >
+                            {% if user.is_authenticated %}
+                            {% if users.username != user.username and not users in blacklists and not users in blacklisters %}
+                            <a href="{% url 'newconversation' users.username %}" class="btn btn btn-primary" type="button"><i class="fas fa-envelope"></i> Message</a>
+                            {% if not users in friends %}
+                            <a href="{% url 'change_friends' 'add' users.pk %}" class="btn btn btn-primary" type="button"><i class="fas fa-user-plus"></i> Follow</a>
+                            {% elif users in friends %}
+                            <a href="{% url 'change_friends' 'remove' users.pk %}" class="btn btn btn-outline-danger" type="button"><i class="fas fa-user-minus"></i></a>
+                            {% endif %}{% endif %}
+                            {% endif %}
+                        </div>
                 </form>
             </div>
         </nav>
@@ -77,16 +98,15 @@
                         <h6>Posts</h6>
                     </div>
                 </div>
-                {% for post in user_posts %}
-                {% if post.video %}
+                {% for post in user_posts %} {% if post.video %}
                 <div class="col-xl-3 col-sm-6 mb-3">
                     <div class="video-card">
                         <div class="video-card-image">
                             <a class="play-icon" href="#"><i class="fas fa-play-circle"></i></a>
-                            <a href="{% url 'post_detail' post.id %}">  <video  width="100%" height="200" >
+                            <a href="{% url 'post_detail' post.id %}"> <video width="100%" height="200">
                                 <source src="{{post.video.url}}" type="video/mp4"> Your browser does not support the video tag.
                             </video></a>
-                             <time id="duration">00:00</time>
+                            <time id="duration">00:00</time>
                         </div>
                         <div class="video-card-body">
                             <div class="video-title">
@@ -101,8 +121,7 @@
                         </div>
                     </div>
                 </div>
-                {% endif %}
-                {% if post.photo %}
+                {% endif %} {% if post.photo %}
                 <div class="col-sm-6 col-md-4 col-lg-4 col-xl-3" data-aos="fade" data-src="{{post.photo.url}}" data-sub-html="<h4>{{post.title}}</h4><p>{{post.content}}</p>">
                     <div class="video-card">
                         <div class="video-card-image">
@@ -122,8 +141,7 @@
                         </div>
                     </div>
                 </div>
-                {% endif %}
-                {% endfor %}
+                {% endif %} {% endfor %}
             </div>
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-center pagination-sm mb-0">
@@ -138,43 +156,26 @@
                     </li>
                 </ul>
             </nav>
-            {% if is_paginated %}
-
-            {% if page_obj.has_previous %}
+            {% if is_paginated %} {% if page_obj.has_previous %}
             <a class="btn btn-outline-info mb-4" href="?page=1">First</a>
-            <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
-            {% endif %}
-
-            {% for num in page_obj.paginator.page_range %}
-            {% if page_obj.number == num %}
-            <a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
-            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-            <a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
-            {% endif %}
-            {% endfor %}
-
-            {% if page_obj.has_next %}
-            <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
-            <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
-            {% endif %}
-
-            {% endif %}
+            <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a> {% endif %} {% for num in page_obj.paginator.page_range %} {% if page_obj.number == num %}
+            <a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a> {% elif num > page_obj.number|add:'-3' and num
+            < page_obj.number|add: '3' %} <a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+                {% endif %} {% endfor %} {% if page_obj.has_next %}
+                <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+                <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a> {% endif %} {% endif %}
         </div>
     </div>
     <!-- /.container-fluid -->
     <!-- Sticky Footer -->
     <footer class="sticky-footer ml-0">
-        <div class="container">
             <div class="row no-gutters">
-                <p class="mt-1 mb-0"><strong class="text-dark">Vidoe</strong>.
-                    <small class="mt-0 mb-0"><a target="_blank" href="https://www.templateshub.net">Templates Hub</a>
+                <p class="mt-1 mb-0"><strong class="text-dark">Branagram</strong>.
+                    <small class="mt-0 mb-0"><a target="_blank" href="#">Term and policy.</a>
                     </small>
                 </p>
-
             </div>
-        </div>
     </footer>
 </div>
 <!-- /.content-wrapper -->
 {% endblock content %}
-
