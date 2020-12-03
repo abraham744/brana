@@ -27,7 +27,6 @@ class VideoForm(forms.ModelForm):
 class PhotoForm(forms.ModelForm):
     category = forms.ModelChoiceField(queryset=Category.objects.all(),
                                       widget=forms.Select(attrs={'class': 'form-control'}))
-    tags = forms.CharField(widget=forms.TextInput(attrs={'class': 'input is-medium'}), required=True)
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop("request")
         super(PhotoForm, self).__init__(*args, **kwargs)
@@ -40,7 +39,7 @@ class PhotoForm(forms.ModelForm):
 
 class MemeForm(forms.ModelForm):
     category = forms.ModelChoiceField(queryset=Category.objects.all(), widget=forms.Select(attrs={'class': 'form-control'}))
-    tags = forms.CharField(widget=forms.TextInput(attrs={'class': 'input is-medium'}), required=True)
+
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop("request")
         super(MemeForm, self).__init__(*args, **kwargs)
@@ -61,7 +60,6 @@ class AlbumUpdateForm(forms.ModelForm):
 class UpdateForm(forms.ModelForm):
     category = forms.ModelChoiceField(queryset=Category.objects.all(),
                                       widget=forms.Select(attrs={'class': 'form-control'}))
-    tags = forms.CharField(widget=forms.TextInput(attrs={'class': 'input is-medium'}), required=True)
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop("request")
         super(UpdateForm,self).__init__(*args, **kwargs)
@@ -69,7 +67,7 @@ class UpdateForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        fields = ( 'photo', 'video','title', 'category','content',)
+        fields = ( 'photo', 'video','thumbnail','title', 'category','content',)
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment

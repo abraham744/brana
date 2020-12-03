@@ -1,0 +1,176 @@
+{% extends "blog/base.html" %} {% load static %} {% block content %}
+
+<div class="single-channel-page" id="content-wrapper">
+    <div class="single-channel-image">
+        <img class="img-fluid" alt="" src="{{users.profile.cover_image.url}}">
+        <div class="channel-profile">{% if users.username != user.username and  users in blacklists or users in blacklisters %}
+            <img class="channel-profile-img" alt="" src="/static/img/unknown.PNG">{% else %}
+            <img class="channel-profile-img" alt="" src="{{users.profile.image.url}}">{% endif %}
+            <div class="social hidden-xs">
+                <form class="form-inline my-2 my-lg-0">
+                    <div style="float: right;" >
+                        {% if user.is_authenticated %}
+                        {% if users.username != user.username and not users in blacklists and not users in blacklisters %}
+                        <a href="{% url 'newconversation' users.username %}" class="btn btn btn-primary" type="button"><i class="fas fa-envelope"></i> Message</a>
+                        {% if not users in friends %}
+                        <a href="{% url 'change_friends' 'add' users.pk %}" class="btn btn btn-primary" type="button"><i class="fas fa-user-plus"></i> Follow</a>
+                        {% elif users in friends %}
+                        <a href="{% url 'change_friends' 'remove' users.pk %}" class="btn btn btn-outline-danger" type="button"><i class="fas fa-user-minus"></i></a>
+                        {% endif %}{% endif %}
+                        {% endif %}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="single-channel-nav">
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <a class="channel-brand" href="#">{{users.username}}<span title="" data-placement="top" data-toggle="tooltip" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></span></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item dropdown ">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Profile
+                        </a>
+                        <div class="dropdown-menu " aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{% url 'profile_me' users.pk %}">View Profile</a>
+                            {% if  users.username == user.username %}
+                            <a class="dropdown-item" href="{% url 'profile' %}">Edit Profile</a>
+                            {% endif %}
+                            <div class="dropdown-divider"></div>
+                            {% if users in blacklists and users.username != user.username %}
+                            <a class="dropdown-item" href="{% url 'block_pk' users.pk %}">Unblock user</a>
+                            {% elif not users in blacklists %}
+                            <a class="dropdown-item" href="{% url 'block_pk' users.pk %}">Block user</a>
+                            {% endif %}
+                        </div>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'fellowship' users.pk %}">fellowship</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'profile_pk' users.pk %}">Posts</a>
+                    </li>
+                    <li class="nav-item  ">
+                        <a class="nav-link" href="{% url 'user-category' users.username %}">Gallery <span class="sr-only">(current)</span></a>
+                    </li>
+
+                    <li class="nav-item ">
+                        <a class="nav-link" href="{% url 'user-playlist' users.username %}">Playlist</a>
+                    </li>
+                    {% if users.username == user.username %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'favorited-posts' users.username %}">Favorites</a>
+                    </li>{% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+
+                </ul>
+                <form class="mobile-search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search for..." name="q"  value="{{ request.GET.q }}">
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-primary" ><i class="fas fa-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </nav>
+        <div class="container-fluid pb-0">
+            <div class="video-block section-padding">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="single-video-left">
+                            {% if followings %}
+                            <div class="main-title">
+                                <div class="btn-group float-right right-action">
+                                   <button type="button" class="btn btn-warning btn-sm border-none"><strong>{{followings.count}}</strong></button>
+                                </div>
+                                <h6>Followings</h6></div>
+                            {% for result in followings %}
+                            {% if not result in blacklisters %}
+                            <div class="single-video-author box mb-3">
+                                <div style="float: right;" >
+                                    {% if user.is_authenticated %}
+                                    <a href="{% url 'newconversation' result.username %}" class="btn btn btn-primary" type="button"><i class="fas fa-envelope"></i></a>
+                                    {% if result.username != user.username %}
+                                    {% if not result in friends %}
+                                    <a href="{% url 'change_friends' 'add' result.pk %}" class="btn btn btn-primary" type="button"><i class="fas fa-user-plus"></i></a>
+                                    {% endif %}
+                                    {% endif %}
+                                    {% endif %}
+                                </div>
+                                <img class="img-author" src="{{ result.profile.image.url }}" alt="">
+                                <p><a href="{% url 'profile_me' result.pk %}"><strong>{{result.username}}</strong></a> <span title="" data-placement="top" data-toggle="tooltip" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></span>{% if  result in friends %}
+                                    <small><strong><i>.following</i></strong></small>{% endif %}</p>
+                                <small> <i class="fa fa-address-card"></i>&nbsp; {{result.email}} &nbsp;</small>
+                            </div>{% endif %}
+                            {% endfor %}
+                             {% else %}
+                                 <div class="col-md-8 mx-auto text-center upload-video pt-5 pb-5">
+                                            <div class="mt-4">
+                                                <a class="btn btn-primary btn-block btn-lg" href="{% url 'blog-home'%}">No following yet.</a>
+                                            </div>
+                                        </div>
+                                {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="single-video-right">
+                            <div class="single-video-left">
+                                {% if follower %}
+                                <div class="main-title">
+                                    <div class="btn-group float-right right-action">
+                                        <button type="button" class="btn btn-warning btn-sm border-none"><strong>{{follower.count}}</strong></button>
+                                    </div>
+                                    <h6>Followers</h6>
+                                </div>
+                                {% for result in follower %}
+                                {% if not result in blacklisters %}
+                                <div class="single-video-author box mb-3">
+                                    <div style="float: right;" >
+                                        {% if user.is_authenticated %}
+                                        <a href="{% url 'newconversation' result.username %}" class="btn btn btn-primary" type="button"><i class="fas fa-envelope"></i></a>
+                                        {% if result.username != user.username %}
+                                        {% if not result in friends %}
+                                        <a href="{% url 'change_friends' 'add' result.pk %}" class="btn btn btn-primary" type="button"><i class="fas fa-user-plus"></i></a>
+                                        {% endif %}
+                                        {% endif %}
+                                        {% endif %}
+                                    </div>
+                                    <img class="img-author" src="{{ result.profile.image.url }}" alt="">
+                                    <p><a href="{% url 'profile_me' result.pk %}"><strong>{{result.username}}</strong></a> <span title="" data-placement="top" data-toggle="tooltip" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></span>{% if  result in friends %}
+                                        <small><strong><i>.following</i></strong></small>{% endif %}</p>
+                                    <small> <i class="fa fa-address-card"></i>&nbsp; {{result.email}} &nbsp;</small>
+                                </div>{% endif %}
+                                {% endfor %}
+                                {% else %}
+                                 <div class="col-md-8 mx-auto text-center upload-video pt-5 pb-5">
+                                            <div class="mt-4">
+                                                <a class="btn btn-primary btn-block btn-lg" href="{% url 'blog-home'%}">No follower yet.</a>
+                                            </div>
+                                        </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+    <footer class="sticky-footer ml-0">
+        <div class="row no-gutters">
+            <p class="mt-1 mb-0"><strong class="text-dark">Branagram</strong>.
+                <small class="mt-0 mb-0"><a target="_blank" href="#">Term and policy.</a>
+                </small>
+            </p>
+        </div>
+    </footer>
+</div>
+<!-- /.content-wrapper -->
+{% endblock content %}

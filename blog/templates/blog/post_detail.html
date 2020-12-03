@@ -12,7 +12,7 @@
                         <div class="single-video-author box mb-3">
                             <img class="img-author" src="{{ post.author.profile.image.url }}" alt="">
                             <!--                            <div class="float-right"><button class="btn btn-success" type="button">Subscribe <strong>1.4M</strong></button> <button class="btn btn btn-outline-danger" type="button"><i class="fas fa-bell"></i></button></div>-->
-                            <p><a href="{% url 'profile_pk' post.author.pk %}"><strong>{{ object.author }}</strong></a> <span title="" data-placement="top" data-toggle="tooltip" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></span></p>
+                            <p><a href="{% url 'profile_me' post.author.pk %}"><strong>{{ object.author }}</strong></a> <span title="" data-placement="top" data-toggle="tooltip" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></span></p>
                             <small>Published on {{ object.date_posted|date:"F d, Y" }}</small>
                             <br>
                             {% if post.video %}
@@ -125,16 +125,16 @@
                                     </symbol>
                                 </defs>
                             </svg>
-                            {% else %}<br>
+                            {% elif post.photo %}<br>
                              <div class="row" id="lightgallery">
                                     <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12" data-aos="fade" data-src="{{post.photo.url}}" data-sub-html="<h4>{{post.title}}</h4><p>{{post.content}}</p>">
 
                             <img width="100%" height="100%" src="{{post.photo.url}}">
-                                    </div></div>
+                                    </div>
+                             </div>
                             <br>
+                            {% else %}
                             {% endif%}
-
-                            <br>
                             <div class="video-card video-card-list">
                                 {% if post.author == user %}
                                 <div  style="float: right;">
@@ -351,6 +351,34 @@
                                     <div class="video-card-image">
                                         <a class="play-icon" href="{% url 'post_detail' post.id %}"><i class="fas fa-expand"></i></a>
                                         <a href="{% url 'post_detail' post.id %}"><img class="img-fluid" src="{{post.photo.url}}" alt=""></a>
+                                    </div><br>
+                                    <div class="video-card-body">
+                                        <div class="btn-group float-right right-action">
+                                            <a href="#" class="right-action-link text-gray" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <a class="dropdown-item" href="#"><i class="fas fa-fw fa-star"></i> &nbsp; Top Rated</a>
+                                                <a class="dropdown-item" href="#"><i class="fas fa-fw fa-signal"></i> &nbsp; Viewed</a>
+                                                <a class="dropdown-item" href="#"><i class="fas fa-fw fa-times-circle"></i> &nbsp; Close</a>
+                                            </div>
+                                        </div>
+                                        <div class="video-title">
+                                            <a href="{% url 'post_detail' post.id %}">{{post.title}}</a>
+                                        </div>
+                                        <div class="video-page text-success">
+                                            {{post.category}}<a title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></a>
+                                        </div>
+                                        <div class="video-view">
+                                            1.8M views &nbsp;<i class="fas fa-calendar-alt"></i>{{ post.date_posted|naturaltime }}
+                                        </div>
+                                    </div>
+                                </div>
+                                {% else %}
+                                <div class="video-card video-card-list">
+                                    <div class="video-card-image">
+                                        <a class="play-icon" href="{% url 'post_detail' post.id %}"><i class="fas fa-expand"></i></a>
+                                        <a href="{% url 'post_detail' post.id %}"><img class="img-fluid" src="/static/img/brana.PNG" alt=""></a>
                                     </div><br>
                                     <div class="video-card-body">
                                         <div class="btn-group float-right right-action">

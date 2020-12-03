@@ -34,6 +34,13 @@
                             <a class="dropdown-item" href="#">Something else here</a>
                         </div>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'fellowship' user.pk %}">fellowship</a>
+                    </li>
+                         <li class="nav-item">
+                        <a class="nav-link" href="{% url 'profile_pk' user.pk %}">posts</a>
+                    </li>
+
                     <li class="nav-item ">
                         <a class="nav-link" href="{% url 'user-category' user.username %}">Gallery <span class="sr-only">(current)</span></a>
                     </li>
@@ -41,7 +48,7 @@
                         <a class="nav-link" href="{% url 'user-playlist' user.username %}">Playlist</a>
                     </li>
                     <li class="nav-item active">
-                        <a class="nav-link" href="#">Favorites</a>
+                        <a class="nav-link active" href="#">Favorites</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">About</a>
@@ -67,7 +74,7 @@
                         <a class="dropdown-item" href="#"><i class="fas fa-fw fa-times-circle"></i> &nbsp; Close</a>
                     </div>
                 </div>
-                <h6>{{post.category}} Gallery</h6>
+                <h6>{{user.username}}'s</h6> favorited posts
                 <hr>
             </div>
 
@@ -88,7 +95,7 @@
                                 {{post.category}} <a title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></a>
                             </div>
                             <div class="video-view">
-                                1.8M views &nbsp;<i class="fas fa-calendar-alt"></i> 11 Months ago
+                               {{post.total_likes}} likes&nbsp;<i class="fas fa-calendar-alt"></i> {{ post.date_posted }}
                             </div>
                         </div>
                     </div>
@@ -111,14 +118,33 @@
                                 {{post.category}} <a title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></a>
                             </div>
                             <div class="video-view">
-                                1.8M views &nbsp;<i class="fas fa-calendar-alt"></i> 11 Months ago
+                                {{post.total_likes}} likes&nbsp;<i class="fas fa-calendar-alt"></i> {{ post.date_posted }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                 {% else %}
+                 <div class="col-sm-6 col-md-4 col-lg-4 col-xl-3" data-aos="fade" data-src="{{post.photo.url}}" data-sub-html="<h4>{{post.title}}</h4><p>{{post.content}}</p>">
+                    <div class="video-card">
+                        <div class="video-card-image">
+                            <a class="play-icon" href="#"><i class="fas fa-images"></i></a>
+                            <a href="#"><img height="163" width="100%" src="/static/img/brana.PNG" alt=""></a>
+                        </div>
+                        <div class="video-card-body">
+                            <div class="video-title">
+                                <a href="{% url 'post_detail' post.id %}">{{post.title}}</a>
+                            </div>
+                            <div class="video-page text-success">
+                                {{post.category}} <a title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></a>
+                            </div>
+                            <div class="video-view">
+                                {{post.total_likes}} likes&nbsp;<i class="fas fa-calendar-alt"></i> {{ post.date_posted }}
                             </div>
                         </div>
                     </div>
                 </div>
                 {% endif %}
                 {% endfor %}
-
             </div>
         </div>
     </div>

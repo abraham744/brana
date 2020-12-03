@@ -116,12 +116,14 @@
                                 {{post.category}} <a title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></a>
                             </div>
                             <div class="video-view">
-                                1.8M views &nbsp;<i class="fas fa-calendar-alt"></i> 11 Months ago
+                                {{post.total_likes}} likes&nbsp;<i class="fas fa-calendar-alt"></i> {{ post.date_posted }}
+
                             </div>
                         </div>
                     </div>
                 </div>
-                {% endif %} {% if post.photo %}
+                {% endif %}
+                {% if post.photo %}
                 <div class="col-sm-6 col-md-4 col-lg-4 col-xl-3" data-aos="fade" data-src="{{post.photo.url}}" data-sub-html="<h4>{{post.title}}</h4><p>{{post.content}}</p>">
                     <div class="video-card">
                         <div class="video-card-image">
@@ -136,12 +138,33 @@
                                 {{post.category}} <a title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></a>
                             </div>
                             <div class="video-view">
-                                1.8M views &nbsp;<i class="fas fa-calendar-alt"></i> 11 Months ago
+                                {{post.total_likes}} likes&nbsp;<i class="fas fa-calendar-alt"></i> {{ post.date_posted }}
                             </div>
                         </div>
                     </div>
                 </div>
-                {% endif %} {% endfor %}
+                {% else %}
+                 <div class="col-sm-6 col-md-4 col-lg-4 col-xl-3" data-aos="fade" data-src="{{post.photo.url}}" data-sub-html="<h4>{{post.title}}</h4><p>{{post.content}}</p>">
+                    <div class="video-card">
+                        <div class="video-card-image">
+                            <a class="play-icon" href="#"><i class="fas fa-images"></i></a>
+                            <a href="#"><img height="163" width="100%" src="/static/img/brana.PNG" alt=""></a>
+                        </div>
+                        <div class="video-card-body">
+                            <div class="video-title">
+                                <a href="{% url 'post_detail' post.id %}">{{post.title}}</a>
+                            </div>
+                            <div class="video-page text-success">
+                                {{post.category}} <a title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></a>
+                            </div>
+                            <div class="video-view">
+                                {{post.total_likes}} likes&nbsp;<i class="fas fa-calendar-alt"></i> {{ post.date_posted }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
             </div>
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-center pagination-sm mb-0">

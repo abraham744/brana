@@ -2,20 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e0a0464d-168f-4345-9347-aa0508097431" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/blog/static/css/branachat.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/blog/static/css/osahan.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/blog/static/img/sss.PNG" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/blog/static/img/sssss.PNG" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/blog/static/img/unknown.PNG" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/blog/static/img/novideo.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/blog/templates/blog/relationships.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/blog/form.py" beforeDir="false" afterPath="$PROJECT_DIR$/blog/form.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/blog/migrations/0001_initial.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/blog/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/blog/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/blog/static/css/Branagram.css" beforeDir="false" afterPath="$PROJECT_DIR$/blog/static/css/branagram.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/blog/static/css/videoplayer.css" beforeDir="false" afterPath="$PROJECT_DIR$/blog/static/css/v-player.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/blog/templates/blog/album.html" beforeDir="false" afterPath="$PROJECT_DIR$/blog/templates/blog/album.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/blog/templates/blog/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/blog/templates/blog/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/blog/templates/blog/category_form.html" beforeDir="false" afterPath="$PROJECT_DIR$/blog/templates/blog/category_form.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/blog/templates/blog/category_posts.html" beforeDir="false" afterPath="$PROJECT_DIR$/blog/templates/blog/category_posts.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/blog/templates/blog/category_videos.html" beforeDir="false" afterPath="$PROJECT_DIR$/blog/templates/blog/category_videos.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/blog/templates/blog/direct.html" beforeDir="false" afterPath="$PROJECT_DIR$/blog/templates/blog/direct.html" afterDir="false" />
@@ -23,110 +16,15 @@
       <change beforePath="$PROJECT_DIR$/blog/templates/blog/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/blog/templates/blog/home.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/blog/templates/blog/home2.html" beforeDir="false" afterPath="$PROJECT_DIR$/blog/templates/blog/home2.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/blog/templates/blog/notifications.html" beforeDir="false" afterPath="$PROJECT_DIR$/blog/templates/blog/notifications.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/blog/templates/blog/photo_form.html" beforeDir="false" afterPath="$PROJECT_DIR$/blog/templates/blog/photo_form.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/blog/templates/blog/playlist.html" beforeDir="false" afterPath="$PROJECT_DIR$/blog/templates/blog/playlist.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/blog/templates/blog/post_confirm_delete.html" beforeDir="false" afterPath="$PROJECT_DIR$/blog/templates/blog/post_confirm_delete.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/blog/templates/blog/post_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/blog/templates/blog/post_detail.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/blog/templates/blog/post_form.html" beforeDir="false" afterPath="$PROJECT_DIR$/blog/templates/blog/post_form.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/blog/templates/blog/profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/blog/templates/blog/profile.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/blog/templates/blog/upload.html" beforeDir="false" afterPath="$PROJECT_DIR$/blog/templates/blog/upload.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/blog/templates/blog/user_album.html" beforeDir="false" afterPath="$PROJECT_DIR$/blog/templates/blog/user_album.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/blog/templates/blog/video_form.html" beforeDir="false" afterPath="$PROJECT_DIR$/blog/templates/blog/video_form.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/blog/templates/oldies/add_comment_to_post.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/blog/templates/oldies/base.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/blog/templates/oldies/direct.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/blog/templates/oldies/home.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/blog/templates/oldies/notifications.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/blog/templates/oldies/post_confirm_delete.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/blog/templates/oldies/post_detail.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/blog/templates/oldies/video_form.html" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/blog/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/blog/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/blog/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/blog/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/brana/Scripts/pip.exe" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/brana/Scripts/pip3.7.exe" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/brana/Scripts/pip3.exe" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/brana/Scripts/pydoc.bat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/brana/Scripts/python.exe" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/brana/Scripts/python3.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/brana/Scripts/python37.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/brana/Scripts/pythonw.exe" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/brana/Scripts/tcl86t.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/brana/Scripts/tk86t.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/brana/Scripts/ucrtbase.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/brana/Scripts/vccorlib140.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/brana/Scripts/vcomp140.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/brana/Scripts/vcruntime140.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/brana/Scripts/wheel-3.7.exe" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/brana/Scripts/wheel.exe" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/brana/Scripts/wheel3.7.exe" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/brana/Scripts/wheel3.exe" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/brana/Scripts/xlwings32-0.17.1.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/brana/Scripts/xlwings64-0.17.1.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/django_project/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/django_project/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/django_project/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/django_project/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/banner.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/media/banner.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/cover_folder/121558613_813893932678966_5843330261738146078_n.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/cover_folder/19250344_1874794196178238_1735141177_o.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/cover_folder/24173575_569513980066773_8032440848801890625_o-removebg-preview.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/cover_folder/24173575_569513980066773_8032440848801890625_o.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/cover_folder/29324522482_eb4237d72f_b.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/cover_folder/392734.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/cover_folder/960x0.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/cover_folder/Copy_of_instagram_story_post_template_-_Made_with_PosterMyWall.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/cover_folder/HR-GR8-technology.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/cover_folder/HR-GR8-technology_FQhyYJB.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/cover_folder/HaileSelassie_wikicommons_1.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/cover_folder/Happy-Birthday-to-me-on-photo-of-victory-sign-Pinterest.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/cover_folder/IMG_20160103_215938.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/cover_folder/IMG_20190430_130437.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/cover_folder/IMG_20200118_005856_767.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/cover_folder/IMG_20201011_110557_279.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/cover_folder/arsema.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/cover_folder/download.jfif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/cover_folder/friends.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/cover_folder/friends_fUn0TMJ.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/cover_folder/image_1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/cover_folder/image_1_GZP3nLz.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/cover_folder/image_2020-10-29_20-07-36.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/cover_folder/image_2020-10-29_20-07-36_1aVHzws.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/cover_folder/image_2020-10-29_20-07-36_2JJDid8.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/cover_folder/image_2020-10-29_20-07-36_GT7JGqo.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/cover_folder/image_2020-10-29_20-07-36_Geb6Guf.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/cover_folder/image_2020-10-29_20-07-36_V3fmLsO.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/cover_folder/image_2020-10-29_20-07-36_f8wRHzK.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/cover_folder/image_2020-10-29_20-07-36_yP59mzX.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/cover_folder/images.jfif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/cover_folder/images.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/cover_folder/images_1.jfif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/cover_folder/images_FofP0Bx.jfif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/cover_folder/img7.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/cover_folder/photo_2020-10-27_20-04-39.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/cover_folder/rose.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/cover_folder/scirt.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/cover_folder/scirt_gYYwKft.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/default.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/media/default.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/pic_folder/BeautyPlus_20190428151140_fast.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/pic_folder/Titanic-Rose.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/pic_folder/abra.jfif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/pic_folder/tttt.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/profile_pics/abra.jfif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/profile_pics/channel-banner.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/profile_pics/download_1.jfif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/profile_pics/download_2.jfif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/profile_pics/image_1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/profile_pics/joe.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/profile_pics/rr.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/profile_pics/shagiz.jfif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/users/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/users/forms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/users/migrations/0001_initial.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/users/migrations/0002_auto_20201119_0043.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/users/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/users/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/users/signals.py" beforeDir="false" afterPath="$PROJECT_DIR$/users/signals.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/users/templates/users/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/users/templates/users/login.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/users/templates/users/register.html" beforeDir="false" afterPath="$PROJECT_DIR$/users/templates/users/register.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/users/templates/users/user_profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/users/templates/users/user_profile.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/users/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/users/views.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -150,16 +48,16 @@
   <component name="PropertiesComponent">
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/blog/static/img" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/blog/templates/blog" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\user\pycharmprojects\Branagram\blog\templates\blog" />
       <recent name="C:\Users\user\pycharmprojects\Branagram\blog\static\img" />
       <recent name="C:\Users\user\pycharmprojects\Branagram\blog\static\css" />
       <recent name="C:\Users\user\pycharmprojects\Branagram\media" />
       <recent name="C:\Users\user\pycharmprojects\django_project" />
-      <recent name="C:\Users\user\pycharmprojects\Deep Learning\django_project\blog\static\images" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\user\pycharmprojects\Deep Learning\django_project\blog\templates\blog" />

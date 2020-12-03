@@ -22,6 +22,8 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+    def total_album(self):
+        return self.name.count()
 
     def get_absolute_url(self):
         return reverse('upload')
@@ -98,7 +100,7 @@ class Post(models.Model):
 
     def save(self, *args, **kwargs):
         super(Post, self).save(*args, **kwargs)
-        if self.photo:
+        if self.meme_bottom:
             im = Image.open(self.photo.path)
             draw = ImageDraw.Draw(im)
             image_width, image_height = im.size
@@ -187,12 +189,13 @@ class Message(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     is_read = models.BooleanField(default=False)
 
-    def send_message(from_user,to_user, body):
+    def send_message(from_user,to_user, body,file):
         sender_message = Message(
             user=from_user,
             sender=from_user,
             recipient=to_user,
             body=body,
+            photo= file,
             is_read=True)
         sender_message.save()
 
@@ -201,6 +204,7 @@ class Message(models.Model):
                 user=to_user,
                 sender=from_user,
                 body=body,
+                photo= file,
                 recipient=from_user, )
             recipient_message.save()
         return sender_message

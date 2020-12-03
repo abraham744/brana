@@ -36,6 +36,7 @@ urlpatterns = [
 
     path('chat', views.Inbox, name='inbox'),
     path('chat/directs/<username>', views.Directs, name='directs'),
+    path('chat/delete/', views.DeleteMessage, name='delete'),
     path('chat/new/', views.UserSearch, name='usersearch'),
     path('chat/new/<username>', views.NewConversation, name='newconversation'),
     path('chat/send/', views.SendDirect, name='send_direct'),
@@ -44,6 +45,7 @@ urlpatterns = [
     path('comment/<int:pk>/approve/', views.comment_approve, name='comment_approve'),
     path('comment/<int:pk>/remove/', views.comment_remove, name='comment_remove'),
     path('<int:pk>/profile/', views.profile, name='profile_me'),
+    path('<int:pk>/fellowship/', views.relations, name='fellowship'),
     path('upload/', views.uploadWhat, name='upload'),
     path('post/<int:pk>/like', views.LikeView, name='like_post'),
     path('post/<int:pk>/like_comment', views.Likecomment, name='like_comment'),

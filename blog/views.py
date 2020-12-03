@@ -53,7 +53,7 @@ class PostListView(ListView):
             if query:
                 users = User.objects.filter(Q(username__icontains=query))
                 for user in users:
-                    follow= Friend.objects.filter(current_user=user).first()
+                    follow = Friend.objects.filter(current_user=user).first()
                     if follow:
                         follower = Friend.objects.filter(current_user=user).get(current_user=user).follower.all()
                     # followings = Friend.objects.filter(current_user=user).first().following.all()
@@ -65,7 +65,7 @@ class PostListView(ListView):
 
             friend = Friend.objects.filter(current_user=request.user).first()
             if friend:
-                blacklists = Friend.objects.filter(current_user= request.user).first().blacklists.all()
+                blacklists = Friend.objects.filter(current_user=request.user).first().blacklists.all()
                 blacklisters = Friend.objects.filter(current_user=request.user).first().blacklisters.all()
                 friends = friend.following.all()
                 friend = friend.follower.all()
@@ -76,8 +76,8 @@ class PostListView(ListView):
             posts = Post.objects.all().filter(Q(author_id__in=friends) | Q(author=request.user)).order_by('?')
             myposts = Post.objects.filter(author=request.user).order_by('-date_posted')
             args = {'posts': posts, 'myalbums': myalbums, 'myposts': myposts, 'users': users, 'friend': friend,
-                    'friends': friends,'blacklists':blacklists,'blacklisters':blacklisters, 'blogs': blogs,
-                    'directs_count': directs_count,'ffollower':ffollower,'follower':follower,
+                    'friends': friends, 'blacklists': blacklists, 'blacklisters': blacklisters, 'blogs': blogs,
+                    'directs_count': directs_count, 'ffollower': ffollower, 'follower': follower,
                     'count_notifications': count_notifications, 'notifications': notifications}
             return render(request, self.template_name, args)
         else:
@@ -94,19 +94,56 @@ class WatchVideoView(ListView):
     model = Post
     template_name = 'blog/home2.html'  # <app>/<model>_<viewtype>.html
     context_object_name = 'posts'
+    ordering = ['-date_posted']
     paginate_by = 5
 
-    def get_queryset(self):
-        if self.request.user.is_authenticated:
-            friend = Friend.objects.filter(current_user=self.request.user).first()
+    def get(self, request):
+        if request.user.is_authenticated:
+            users = None
+            blacklists = None
+            blacklisters = None
+            follower = None
+            ffollower = None
+            blogs = None
+            query = request.GET.get("q")
+            if query:
+                users = User.objects.filter(Q(username__icontains=query))
+                for user in users:
+                    follow = Friend.objects.filter(current_user=user).first()
+                    if follow:
+                        follower = Friend.objects.filter(current_user=user).get(current_user=user).follower.all()
+                    # followings = Friend.objects.filter(current_user=user).first().following.all()
+
+                blogs = Post.objects.filter(Q(title__icontains=query))
+            notifications = Notification.objects.filter(user=request.user).order_by('-date')
+            count_notifications = Notification.objects.filter(user=request.user, is_seen=False).count()
+            directs_count = Message.objects.filter(user=request.user, is_read=False).count()
+
+            friend = Friend.objects.filter(current_user=request.user).first()
             if friend:
+                blacklists = Friend.objects.filter(current_user=request.user).first().blacklists.all()
+                blacklisters = Friend.objects.filter(current_user=request.user).first().blacklisters.all()
                 friends = friend.following.all()
+                friend = friend.follower.all()
             else:
                 friends = User.objects.none()
-            return Post.objects.all().filter(Q(author_id__in=friends) | Q(author=self.request.user)).order_by(
-                '-date_posted')
+            # friends = friend.users.all()
+            myalbums = Category.objects.filter(author=request.user)
+            posts = Post.objects.all().filter(Q(author_id__in=friends) | Q(author=request.user)).order_by('?')
+            myposts = Post.objects.filter(author=request.user).order_by('-date_posted')
+            args = {'posts': posts, 'myalbums': myalbums, 'myposts': myposts, 'users': users, 'friend': friend,
+                    'friends': friends, 'blacklists': blacklists, 'blacklisters': blacklisters, 'blogs': blogs,
+                    'directs_count': directs_count, 'ffollower': ffollower, 'follower': follower,
+                    'count_notifications': count_notifications, 'notifications': notifications}
+            return render(request, self.template_name, args)
         else:
-            return Post.objects.all().order_by('?')
+            users = None
+            posts = Post.objects.all().order_by('no_viewers')
+            query = request.GET.get("q")
+            if query:
+                users = User.objects.filter(Q(username__icontains=query))
+            args = {'posts': posts, 'users': users}
+            return render(request, self.template_name, args)
 
 
 class PlaylistView(ListView):
@@ -269,7 +306,6 @@ def tags(request, tag_slug):
         'posts': posts,
         'tag': tag,
     }
-
     return HttpResponse(request, 'blog/tags.html', context)
 
 
@@ -379,6 +415,32 @@ class MemeCreateView(LoginRequiredMixin, CreateView):
 def uploadWhat(request):
     return render(request, 'blog/upload.html', {'title': 'choose post items'})
 
+@login_required
+def relations(request, pk):
+    blacklists = None
+    blacklisters = None
+    if pk:
+        friend = Friend.objects.filter(current_user=request.user).first()
+        if friend:
+            friends = friend.following.all()
+            blacklists = friend.blacklists.all()
+            blacklisters = friend.blacklisters.all()
+            friend = friend.follower.all()
+        else:
+            friends = User.objects.none()
+        users = User.objects.get(pk=pk)
+        followers = None
+        followings = None
+        follow = Friend.objects.filter(current_user=users).first()
+        if follow:
+            followings = follow.following.all()
+            followers = follow.follower.all()
+        else:
+            friends = User.objects.none()
+
+    args = {'users': users, 'follower': followers, 'blacklists': blacklists, 'blacklisters': blacklisters, 'friend': friend,
+            'friends': friends, 'followings': followings}
+    return render(request, 'blog/relationships.html', args)
 
 @login_required
 def profile(request, pk):
@@ -394,16 +456,20 @@ def profile(request, pk):
         else:
             friends = User.objects.none()
         users = User.objects.get(pk=pk)
-        follower = None
+        total_album = Category.objects.filter(author=users).count()
+        total_post = Post.objects.filter(author=users,).count()
+        followers = None
         followings = None
         follow = Friend.objects.filter(current_user=users).first()
         if follow:
             followings = follow.following.all()
-            follower = follow.follower.all()
+            followers = follow.follower.all()
         else:
             friends = User.objects.none()
 
-    args = {'users': users, 'follower': follower,'blacklists':blacklists,'blacklisters':blacklisters, 'friend': friend, 'friends': friends, 'followings': followings}
+    args = {'users': users, 'follower': followers, 'total_photo': total_post, 'total_video': total_post,
+            'total_album': total_album, 'blacklists': blacklists, 'blacklisters': blacklisters, 'friend': friend,
+            'friends': friends, 'followings': followings}
     return render(request, 'blog/profile.html', args)
 
 
@@ -624,6 +690,12 @@ def Directs(request, username):
 
 
 @login_required
+def DeleteMessage(request, username=None):
+    Message.get_messages(user=request.user).delete()
+    return redirect('inbox')
+
+
+@login_required
 def NewConversation(request, username):
     from_user = request.user
     body = 'you are joined succesfullyl'
@@ -639,14 +711,15 @@ def NewConversation(request, username):
 @login_required
 def SendDirect(request):
     from_user = request.user
-    to_user_username = request.POST.get('to_user')
-    body = request.POST.get('body')
     if request.method == 'POST':
+        to_user_username = request.POST.get('to_user')
+        body = request.POST.get('body')
         to_user = User.objects.get(username=to_user_username)
-        Message.send_message(from_user, to_user, body)
+        Message.send_message(from_user, to_user, body, file=None)
         return redirect('inbox')
     else:
         HttpResponseBadRequest()
+
 
 
 def checkDirects(request):
