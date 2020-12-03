@@ -13,8 +13,7 @@ class MessageForm(forms.ModelForm):
         ]
 class VideoForm(forms.ModelForm):
     category = forms.ModelChoiceField(queryset=Category.objects.all(),widget=forms.Select(attrs={'class': 'form-control'}))
-    tags = forms.CharField(widget=forms.TextInput(attrs={'class': 'input is-medium'}), required=True)
-
+   
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop("request")
         super(VideoForm, self).__init__(*args, **kwargs)

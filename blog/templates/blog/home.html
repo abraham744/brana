@@ -277,17 +277,17 @@
                                                 <!-- Note that for bootstrap all the rows are always 12 columns -->
                                                 <div class="col-6">
                                                     {% if friends %}
-                                                    <div class="channels-card-image-btn"><a type="button" class="btn btn-primary btn-sm border-none">Following</a> <button type="button" class="btn btn-warning btn-sm border-none"><strong>{{friends.count}}</strong></button></div>
+                                                    <div class="channels-card-image-btn"><button type="button" class="btn btn-primary border-none btn-sm">Following</button> <button type="button" class="btn btn-warning btn-sm border-none"><strong>{{friends.count}}</strong></button></div>
                                                     {% else %}
-                                                    <div class="channels-card-image-btn"><a type="button" class="btn btn-primary btn-sm border-none">Following</a> <button type="button" class="btn btn-warning btn-sm border-none"><strong>0</strong></button></div>
+                                                    <div class="channels-card-image-btn"><button type="button" class="btn btn-primary btn-sm border-none">Following</button> <button type="button" class="btn btn-warning btn-sm border-none"><strong>0</strong></button></div>
 
                                                     {% endif %}
                                                 </div>
                                                 <div class="col-6">
                                                     {% if friend %}
-                                                    <div class="channels-card-image-btn"><a type="button" class="btn btn-primary btn-sm border-none">Follower</a> <button type="button" class="btn btn-warning btn-sm border-none"><strong>{{friend.count}}</strong></button></div>
+                                                    <div class="channels-card-image-btn"><button type="button" class="btn btn-primary btn-sm border-none">Follower</button> <button type="button" class="btn btn-warning btn-sm border-none"><strong>{{friend.count}}</strong></button></div>
                                                     {% else %}
-                                                    <div class="channels-card-image-btn"><a type="button" class="btn btn-primary btn-sm border-none">Follower</a> <button type="button" class="btn btn-warning btn-sm border-none"><strong>0</strong></button></div>
+                                                    <div class="channels-card-image-btn"><button type="button" class="btn btn-primary btn-sm border-none">Follower</button> <button type="button" class="btn btn-warning btn-sm border-none"><strong>0</strong></button></div>
 
                                                     {% endif %}
                                                 </div>
