@@ -1,24 +1,9 @@
-                                /*
+/*
 Template Name: VIDOE - Video Streaming Website HTML Template
 Author: Askbootstrap
 Author URI: https://themeforest.net/user/askbootstrap
 Version: 1.0
 */
-var box = document.getElementById('box');
-var down = false;
-
-
-function toggleNotifi() {
-    if (down) {
-        box.style.height = '0px';
-        box.style.opacity = 0;
-        down = false;
-    } else {
-        box.style.height = '510px';
-        box.style.opacity = 1;
-        down = true;
-    }
-}
 (function($) {
     "use strict"; // Start of use strict
 
@@ -28,10 +13,33 @@ function toggleNotifi() {
         $("body").toggleClass("sidebar-toggled");
         $(".sidebar").toggleClass("toggled");
     });
+    $(document).ready(function() {
+        function screenClass() {
+            if ($(window).innerWidth() > 575) {
+                $(".sidebar").hover(function(e) {
+                    $("body").removeClass("sidebar-toggled");
+                    $(".sidebar").removeClass("toggled");
+                });
+                $("#content").hover(function(e) {
+                    $("body").addClass("sidebar-toggled");
+                    $(".sidebar").addClass("toggled");
+                });
+            } else {
+                $("body").addClass("sidebar-toggled");
+                $(".sidebar").addClass("toggled");
+            }
+        }
+
+        screenClass();
+
+        $(window).bind('resize', function() {
+            screenClass();
+        });
+    });
 
     // Prevent the content wrapper from scrolling when the fixed side navigation hovered over
     $('body.fixed-nav .sidebar').on('mousewheel DOMMouseScroll wheel', function(e) {
-        if ($window.width() > 768) {
+        if ($window.width() > 575) {
             var e0 = e.originalEvent,
                 delta = e0.wheelDelta || -e0.detail;
             this.scrollTop += (delta < 0 ? 1 : -1) * 30;
@@ -53,7 +61,7 @@ function toggleNotifi() {
             navigationText: ["<i class='fa fa-chevron-left'></i>", "<i class='fa fa-chevron-right'></i>"]
         });
     }
-
+      // Category Owl Carousel
     var objowlcarousel = $(".owl-carousel-category2");
     if (objowlcarousel.length > 0) {
         objowlcarousel.owlCarousel({

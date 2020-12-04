@@ -3,6 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="e0a0464d-168f-4345-9347-aa0508097431" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blog/static/js/brana.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/blog/static/js/custom.js" beforeDir="false" afterPath="$PROJECT_DIR$/blog/static/js/branagram.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blog/templates/blog/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/blog/templates/blog/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blog/templates/blog/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/blog/templates/blog/home.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/django_project/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/django_project/settings.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -26,23 +31,23 @@
   <component name="PropertiesComponent">
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/blog/templates/blog" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/blog/static/js" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\user\pycharmprojects\Branagram\blog\templates\blog" />
-      <recent name="C:\Users\user\pycharmprojects\Branagram\blog\static\img" />
-      <recent name="C:\Users\user\pycharmprojects\Branagram\blog\static\css" />
-      <recent name="C:\Users\user\pycharmprojects\Branagram\media" />
-      <recent name="C:\Users\user\pycharmprojects\django_project" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\user\pycharmprojects\Deep Learning\django_project\blog\templates\blog" />
       <recent name="C:\Users\user\pycharmprojects\Deep Learning\django_project\blog\static\fonts\flaticon" />
       <recent name="C:\Users\user\pycharmprojects\Deep Learning\django_project\blog" />
       <recent name="C:\Users\user\pycharmprojects\Deep Learning\django_project\media" />
       <recent name="C:\Users\user\pycharmprojects\Deep Learning\django_project\blog\static\css" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\user\pycharmprojects\Branagram\blog\static\js" />
+      <recent name="C:\Users\user\pycharmprojects\Branagram\blog\templates\blog" />
+      <recent name="C:\Users\user\pycharmprojects\Branagram\blog\static\img" />
+      <recent name="C:\Users\user\pycharmprojects\Branagram\blog\static\css" />
+      <recent name="C:\Users\user\pycharmprojects\Branagram\media" />
     </key>
   </component>
   <component name="RunDashboard">
